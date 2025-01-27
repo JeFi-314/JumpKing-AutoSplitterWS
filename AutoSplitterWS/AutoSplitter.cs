@@ -1,0 +1,78 @@
+﻿using HarmonyLib;
+using System;
+using System.Diagnostics;
+using System.IO;
+using System.Reflection;
+
+
+using JumpKing.Mods;
+using JumpKing.PauseMenu;
+
+// using AutoSplitterWS.Menu;
+
+namespace AutoSplitterWS;
+[JumpKingMod(IDENTIFIER)]
+public static class AutoSplitterWS
+{
+    const string IDENTIFIER = "JeFi.AutoSplitterWS";
+    const string HARMONY_IDENTIFIER = "JeFi.AutoSplitterWS.Harmony";
+
+    public static string AssemblyPath { get; set; }
+
+    [BeforeLevelLoad]
+    public static void BeforeLevelLoad()
+    {
+        AssemblyPath = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
+#if DEBUG
+        Debugger.Launch();
+        Debug.WriteLine("------");
+        Harmony.DEBUG = true;
+        Environment.SetEnvironmentVariable("HARMONY_LOG_FILE", $@"{AssemblyPath}\harmony.log.txt");
+#endif
+
+        Harmony harmony = new Harmony(HARMONY_IDENTIFIER);
+
+        try {
+            // new Patching.(harmony);
+        }
+        catch (Exception e) {
+            Debug.WriteLine(e.ToString());
+
+            // Debug.WriteLine($"Message: {e.Message}");
+            // Debug.WriteLine($"Stack Trace: {e.StackTrace}");
+
+            // if (e.InnerException != null)
+            // {
+            //         Debug.WriteLine("Inner Exception:");
+            //         Debug.WriteLine(e.InnerException.ToString());
+            // }
+        }
+
+#if DEBUG
+        Environment.SetEnvironmentVariable("HARMONY_LOG_FILE", null);
+#endif
+    }
+
+    [OnLevelStart]
+    public static void OnLevelStart()
+    {
+    }
+
+#if DEBUG
+    #region Menu Items
+    // [PauseMenuItemSetting]
+    // [MainMenuItemSetting]
+    // public static OptionUpsideDown OptionUpsideDown(object factory, GuiFormat format)
+    // {
+    //     return new OptionUpsideDown();
+    // }
+
+    // [PauseMenuItemSetting]
+    // [MainMenuItemSetting]
+    // public static ToggleReverseGravity ToggleReverseGravity(object factory, GuiFormat format)
+    // {
+    //     return new ToggleReverseGravity();
+    // }
+    #endregion
+#endif
+}
