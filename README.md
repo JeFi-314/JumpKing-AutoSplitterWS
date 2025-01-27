@@ -1,3 +1,3 @@
-# Workshop Version of AutoSplitter for Jump king
+# AutoSplitter for Jump king (Workshop Version)
 
 WIP
