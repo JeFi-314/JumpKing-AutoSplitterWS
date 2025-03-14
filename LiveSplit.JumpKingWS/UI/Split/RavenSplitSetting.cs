@@ -29,20 +29,20 @@ public partial class RavenSplitSetting : SplitSetting
     }
     protected override void AddHandlers() 
     {
-        textBox_RavenName.TextChanged += RavenNameChanged;
-        numericUpDown_HomeIndex.ValueChanged += HomeIndexChanged;
+        textBox_RavenName.TextChanged += OnRavenNameChanged;
+        numericUpDown_HomeIndex.ValueChanged += OnHomeIndexChanged;
     }
     protected override void RemoveHandlers() 
     {
-        textBox_RavenName.TextChanged -= RavenNameChanged;
-        numericUpDown_HomeIndex.ValueChanged -= HomeIndexChanged;
+        textBox_RavenName.TextChanged -= OnRavenNameChanged;
+        numericUpDown_HomeIndex.ValueChanged -= OnHomeIndexChanged;
     }
 
-    private void RavenNameChanged(object sender, EventArgs e)
+    private void OnRavenNameChanged(object sender, EventArgs e)
     {
         ravenSplit.ravenName = textBox_RavenName.Text;
     }
-    private void HomeIndexChanged(object sender, EventArgs e)
+    private void OnHomeIndexChanged(object sender, EventArgs e)
     {
         ravenSplit.homeIndex1 = (int)numericUpDown_HomeIndex.Value;
     }

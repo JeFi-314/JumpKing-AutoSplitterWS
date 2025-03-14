@@ -39,13 +39,13 @@ public partial class AchievementSplitSetting : SplitSetting
     }
     protected override void AddHandlers() 
     {
-        comboBox_Achievement.SelectedIndexChanged += CodeChanged;
+        comboBox_Achievement.SelectedIndexChanged += OnCodeChanged;
     }
     protected override void RemoveHandlers() 
     {
-        comboBox_Achievement.SelectedIndexChanged -= CodeChanged;
+        comboBox_Achievement.SelectedIndexChanged -= OnCodeChanged;
     }
-    private void CodeChanged(object sender, EventArgs e)
+    private void OnCodeChanged(object sender, EventArgs e)
     {
         achievementSplit.code = (Achievement)comboBox_Achievement.SelectedItem;
     }

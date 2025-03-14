@@ -54,10 +54,10 @@ public partial class SplitSettingFrame : UserControl
     }
     private void AddHandlers()
     {
-        combo_SplitType.SelectedIndexChanged += SplitTypeChanged;
+        combo_SplitType.SelectedIndexChanged += OnSplitTypeChanged;
     }
 
-    private void SplitTypeChanged(object sender, EventArgs e)
+    private void OnSplitTypeChanged(object sender, EventArgs e)
     {
         table_Main.SuspendLayout();
         if (SplitSetting!=null) {

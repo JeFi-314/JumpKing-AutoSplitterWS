@@ -25,7 +25,7 @@ public partial class Settings : UserControl
     {
         Form form = FindForm();
         if (!isRegistedFormClosed) {
-            form.FormClosed += MainFormClosed;
+            form.FormClosed += OnMainFormClosed;
             isRegistedFormClosed = true;
         }
 
@@ -42,7 +42,7 @@ public partial class Settings : UserControl
         flow_SplitSettings.ResumeLayout();
     }
 
-    private void MainFormClosed(object sender, FormClosedEventArgs e)
+    private void OnMainFormClosed(object sender, FormClosedEventArgs e)
     {
         Form form = FindForm();
 
@@ -59,7 +59,7 @@ public partial class Settings : UserControl
         Debug.WriteLine($"[Setting] Clear all split settings");
 
         if (isRegistedFormClosed) {
-            form.FormClosed -= MainFormClosed;
+            form.FormClosed -= OnMainFormClosed;
             isRegistedFormClosed = false;
         }
     }

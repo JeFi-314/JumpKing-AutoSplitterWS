@@ -22,7 +22,7 @@ partial class Settings
 
         if (isRegistedFormClosed) {
             Form form = FindForm();
-            form.FormClosed -= MainFormClosed;
+            form.FormClosed -= OnMainFormClosed;
             isRegistedFormClosed = false;
         }
 

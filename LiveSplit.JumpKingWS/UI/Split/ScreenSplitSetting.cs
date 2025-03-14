@@ -30,14 +30,14 @@ public partial class ScreenSplitSetting : SplitSetting
     }
     protected override void AddHandlers() 
     {
-        numericUpDown_Number.ValueChanged += new EventHandler(NumberChanged);
+        numericUpDown_Number.ValueChanged += new EventHandler(OnNumberChanged);
     }
     protected override void RemoveHandlers() 
     {
-        numericUpDown_Number.ValueChanged -= NumberChanged;
+        numericUpDown_Number.ValueChanged -= OnNumberChanged;
     }
 
-    private void NumberChanged(object sender, EventArgs e)
+    private void OnNumberChanged(object sender, EventArgs e)
     {
         screenSplit.number = (int)numericUpDown_Number.Value;
     }
