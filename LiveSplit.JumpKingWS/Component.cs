@@ -114,8 +114,9 @@ public class Component : IComponent {
 	}
 	public int GetSettingsHashCode()
 	{ 
-		int hash = GetSettings(new XmlDocument()).OuterXml.GetStableHashCode();
-		// Debug.WriteLine(hash);
+		int hash = 0;
+		hash ^= SplitManager.GetHash();
+		Debug.WriteLine(hash);
 		return hash;
 	}
 

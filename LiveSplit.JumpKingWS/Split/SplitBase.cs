@@ -43,4 +43,9 @@ public abstract class SplitBase
         Debug.WriteLine($"[Split-{splitIndex}] {FullName} at {igt:hh\\:mm\\:ss\\.fff}");
     }
     public abstract UndoResult CheckUndo();
+
+    public int GetHash()
+    {
+        return FullName.GetStableHashCode();
+    }
 }

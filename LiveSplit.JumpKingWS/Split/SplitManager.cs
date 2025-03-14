@@ -155,4 +155,24 @@ public static class SplitManager
             }
         }
     }
+
+    public static int GetHash()
+    {
+        const int Int32BitSize = 32;
+        int hash = 0;
+        int shift = 0;
+        int quotient = 0;
+        int h;
+        foreach (var split in SplitList) {
+            h = split.GetHash()+quotient;
+            h = (h<<shift)|(h>>(Int32BitSize-shift));
+            hash ^= h;
+            shift++;
+            if (shift>=Int32BitSize) {
+                shift -= Int32BitSize;
+                quotient++;
+            }
+        }
+        return hash;
+    }
 }
