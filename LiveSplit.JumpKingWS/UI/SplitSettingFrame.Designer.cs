@@ -38,7 +38,7 @@
             // 
             this.table_Main.ColumnCount = 4;
             this.table_Main.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 100F));
-            this.table_Main.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 70F));
+            this.table_Main.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 90F));
             this.table_Main.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.table_Main.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 26F));
             this.table_Main.Controls.Add(this.label_SplitName, 0, 0);
@@ -72,7 +72,7 @@
             this.combo_SplitType.Location = new System.Drawing.Point(100, 0);
             this.combo_SplitType.Margin = new System.Windows.Forms.Padding(0);
             this.combo_SplitType.Name = "combo_SplitType";
-            this.combo_SplitType.Size = new System.Drawing.Size(70, 21);
+            this.combo_SplitType.Size = new System.Drawing.Size(90, 21);
             this.combo_SplitType.TabIndex = 4;
             // 
             // SplitSettingFrame
