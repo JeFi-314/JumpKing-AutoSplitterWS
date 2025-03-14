@@ -10,6 +10,7 @@ namespace LiveSplit.JumpKingWS.Split;
 
 public class EndingSplit: SplitBase
 {
+    const string ENDINGNAME = "EndingName";
     public override SplitType SplitType => SplitType.Ending;
     public override string FullName => $"{SplitType.GetName()}-{endingName}";
     public string endingName;
@@ -27,13 +28,13 @@ public class EndingSplit: SplitBase
     }
     public override void SetFromXml(XmlNode node)
     {
-        endingName = node.Attributes["endingName"].Name;
+        endingName = node[ENDINGNAME].InnerText;
     }
     public override XmlElement GetXmlElement(XmlDocument document)
     {
         XmlElement splitElement = base.GetXmlElement(document);
         
-        XmlElement endingElement = document.CreateElement("EndingName");
+        XmlElement endingElement = document.CreateElement(ENDINGNAME);
         endingElement.InnerText = endingName;
         splitElement.AppendChild(endingElement);
 

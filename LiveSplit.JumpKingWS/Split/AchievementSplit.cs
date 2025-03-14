@@ -10,6 +10,7 @@ namespace LiveSplit.JumpKingWS.Split;
 
 public class AchievementSplit: SplitBase
 {
+    const string CODE = "Code";
     public override SplitType SplitType => SplitType.Achievement;
     public override string FullName => $"{SplitType.GetName()}-{code.GetName()}";
     public Achievement code;
@@ -25,13 +26,13 @@ public class AchievementSplit: SplitBase
     }
     public override void SetFromXml(XmlNode node)
     {
-        code = (Achievement)int.Parse(node.Attributes["code"].Name);
+        code = (Achievement)int.Parse(node[CODE].InnerText);
     }
     public override XmlElement GetXmlElement(XmlDocument document)
     {
         XmlElement splitElement = base.GetXmlElement(document);
         
-        XmlElement codeElement = document.CreateElement("Code");
+        XmlElement codeElement = document.CreateElement(CODE);
         codeElement.InnerText = ((int)code).ToString();
         splitElement.AppendChild(codeElement);
 

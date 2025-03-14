@@ -1,5 +1,6 @@
 ﻿using CommonCom.Util;
 using LiveSplit.JumpKingWS.Communication;
+using LiveSplit.JumpKingWS.Split;
 using LiveSplit.JumpKingWS.State;
 using LiveSplit.JumpKingWS.UI;
 using LiveSplit.Model;
@@ -100,12 +101,22 @@ public class Component : IComponent {
 		startGameTicks = gameTicks;
 	}
 
-	public Control GetSettingsControl(LayoutMode mode) { return Settings; }
-	public void SetSettings(XmlNode document) {}
-	public XmlNode GetSettings(XmlDocument document) { return document.CreateElement("Settings"); }
+	public Control GetSettingsControl(LayoutMode mode) => Settings;
+	public void SetSettings(XmlNode xmlNode)
+	{
+		SplitManager.SetSplitFromXml(xmlNode["Splits"]);
+	}
+	public XmlNode GetSettings(XmlDocument document)
+	{
+		XmlElement xmlElement = document.CreateElement("Settings");
+		xmlElement.AppendChild(SplitManager.GetXmlElement(document));
+		return xmlElement;
+	}
 	public int GetSettingsHashCode()
 	{ 
-		return GetSettings(new XmlDocument()).OuterXml.GetStableHashCode();
+		int hash = GetSettings(new XmlDocument()).OuterXml.GetStableHashCode();
+		// Debug.WriteLine(hash);
+		return hash;
 	}
 
 	#region LiveSplitState Events

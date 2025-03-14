@@ -8,7 +8,7 @@ namespace LiveSplit.JumpKingWS.Split;
 
 public static class SplitManager
 {
-    public static List<SplitBase> SplitList {get; private set; }
+    public readonly static List<SplitBase> SplitList;
     private static (int, SplitBase)? undoSplit;
     private static int currentIndex => Component.State?.CurrentSplitIndex ?? -1;
 
@@ -20,12 +20,12 @@ public static class SplitManager
             new ScreenSplit(15),
             new ScreenSplit(20),
             new ScreenSplit(26),
-            new ScreenSplit(33),
-            new ScreenSplit(37),
-            new ScreenSplit(40),
-            // new RavenSplit("raven", 0),
-            // new ItemSplit(Item.Cap, 1),
-            // new AchievementSplit(Achievement.JUMP_1000),
+            // new ScreenSplit(33),
+            // new ScreenSplit(37),
+            // new ScreenSplit(40),
+            new RavenSplit("raven", 1),
+            new ItemSplit(Item.Cap, 1),
+            new AchievementSplit(Achievement.FALL_100),
             new EndingSplit(Ending.Normal),
         ];
         undoSplit = null;
@@ -58,11 +58,11 @@ public static class SplitManager
     public static void SetSplitFromXml(XmlNode splitsNode)
     {
         Clear();
-        foreach (XmlNode node in splitsNode.ChildNodes)
+        foreach (XmlNode node in splitsNode.SelectNodes(".//Split"))
         {
             try
             {
-                switch(node.Name) 
+                switch(node.Attributes["type"]?.Value) 
                 {
                     case "Manual":
                         SplitList.Add(new ManualSplit(node));

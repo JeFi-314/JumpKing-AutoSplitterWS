@@ -10,6 +10,8 @@ namespace LiveSplit.JumpKingWS.Split;
 
 public class RavenSplit: SplitBase
 {
+    const string RAVENNAME = "RavenName";
+    const string HOMEINDEX = "HomeIndex";
     public override SplitType SplitType => SplitType.Raven;
     public override string FullName => $"{SplitType.GetName()}-{ravenName},{homeIndex1}";
     public string ravenName;
@@ -28,17 +30,17 @@ public class RavenSplit: SplitBase
     }
     public override void SetFromXml(XmlNode node)
     {
-        ravenName = node.Attributes["ravenName"].Name;
-        homeIndex1 = int.Parse(node.Attributes["homeIndex"].Name);
+        ravenName = node[RAVENNAME].InnerText;
+        homeIndex1 = int.Parse(node[HOMEINDEX].InnerText);
     }
     public override XmlElement GetXmlElement(XmlDocument document)
     {
         XmlElement splitElement = base.GetXmlElement(document);
-        XmlElement ravenNameElement = document.CreateElement("RavenName");
+        XmlElement ravenNameElement = document.CreateElement(RAVENNAME);
         ravenNameElement.InnerText = ravenName;
         splitElement.AppendChild(ravenNameElement);
 
-        XmlElement homeIndexElement = document.CreateElement("HomeIndex");
+        XmlElement homeIndexElement = document.CreateElement(HOMEINDEX);
         homeIndexElement.InnerText = homeIndex1.ToString();
         splitElement.AppendChild(homeIndexElement);
 

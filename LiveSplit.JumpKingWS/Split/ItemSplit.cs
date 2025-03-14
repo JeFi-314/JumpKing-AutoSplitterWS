@@ -10,6 +10,8 @@ namespace LiveSplit.JumpKingWS.Split;
 
 public class ItemSplit: SplitBase
 {
+    const string ITEM = "Item";
+    const string COUNT = "Count";
     public override SplitType SplitType => SplitType.Item;
     public override string FullName => $"{SplitType.GetName()}-{item.GetName()},{count}";
     public Item item;
@@ -28,18 +30,18 @@ public class ItemSplit: SplitBase
     }
     public override void SetFromXml(XmlNode node)
     {
-        item = (Item)int.Parse(node.Attributes["count"].Name);
-        count = int.Parse(node.Attributes["count"].Name);
+        item = (Item)int.Parse(node[ITEM].InnerText);
+        count = int.Parse(node[COUNT].InnerText);
     }
     public override XmlElement GetXmlElement(XmlDocument document)
     {
         XmlElement splitElement = base.GetXmlElement(document);
 
-        XmlElement itemElement = document.CreateElement("Item");
+        XmlElement itemElement = document.CreateElement(ITEM);
         itemElement.InnerText = ((int)item).ToString();
         splitElement.AppendChild(itemElement);
 
-        XmlElement countElement = document.CreateElement("Count");
+        XmlElement countElement = document.CreateElement(COUNT);
         countElement.InnerText = count.ToString();
         splitElement.AppendChild(countElement);
 

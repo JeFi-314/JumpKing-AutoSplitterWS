@@ -8,6 +8,7 @@ namespace LiveSplit.JumpKingWS.Split;
 
 public class ScreenSplit: SplitBase
 {
+    const string NUMBER = "Number";
     public override SplitType SplitType => SplitType.Screen;
     public override string FullName => $"{SplitType.GetName()}-{number}";
     public int number;
@@ -25,14 +26,14 @@ public class ScreenSplit: SplitBase
     }
     public override void SetFromXml(XmlNode node)
     {
-        number = int.Parse(node.Attributes["Number"].Name);
+        number = int.Parse(node[NUMBER].InnerText);
     }
 
     public override XmlElement GetXmlElement(XmlDocument document)
     {
         XmlElement splitElement = base.GetXmlElement(document);
         
-        XmlElement indexElement = document.CreateElement("Number");
+        XmlElement indexElement = document.CreateElement(NUMBER);
         indexElement.InnerText = number.ToString();
         splitElement.AppendChild(indexElement);
 
