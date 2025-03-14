@@ -4,8 +4,8 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">x64</Platform>
-		<LangVersion>11.0</LangVersion>
-    <ProjectGuid>0f4f9c5b-39c5-4787-ab42-f6417d573a91</ProjectGuid>
+    <LangVersion>Latest</LangVersion>
+    <ProjectGuid>{0F4F9C5B-39C5-4787-AB42-F6417D573A91}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>LiveSplit.JumpKingWS</RootNamespace>
@@ -49,9 +49,6 @@
     <Reference Include="System.Core" />
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
-    <Reference Include="System.Resources.Extensions, Version=9.0.0.1, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
-      <HintPath>packages\System.Resources.Extensions.9.0.1\lib\net462\System.Resources.Extensions.dll</HintPath>
-    </Reference>
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
     <Reference Include="UpdateManager, Version=0.1.0.0, Culture=neutral, processorArchitecture=MSIL">
@@ -61,8 +58,88 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="..\CommonCom\*.cs" />
+    <Compile Include="..\CommonCom\Util\*.cs" />
     <Compile Include="*.cs" />
+    <Compile Include="Communication\*.cs" />
+    <Compile Include="Split\*.cs" />
+    <Compile Include="State\*.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="UI\Settings.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="UI\Settings.Designer.cs">
+      <DependentUpon>Settings.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UI\Split\RavenSplitSetting.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="UI\Split\RavenSplitSetting.Designer.cs">
+      <DependentUpon>RavenSplitSetting.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UI\Split\ItemSplitSetting.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="UI\Split\ItemSplitSetting.Designer.cs">
+      <DependentUpon>ItemSplitSetting.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UI\Split\EndingSplitSetting.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="UI\Split\EndingSplitSetting.Designer.cs">
+      <DependentUpon>EndingSplitSetting.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UI\Split\ManualSplitSetting.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="UI\Split\ManualSplitSetting.Designer.cs">
+      <DependentUpon>ManualSplitSetting.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UI\Split\AchievementSplitSetting.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="UI\Split\AchievementSplitSetting.Designer.cs">
+      <DependentUpon>AchievementSplitSetting.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UI\Split\ScreenSplitSetting.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="UI\Split\ScreenSplitSetting.Designer.cs">
+      <DependentUpon>ScreenSplitSetting.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UI\Split\SplitSetting.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <EmbeddedResource Include="UI\Settings.resx">
+      <DependentUpon>Settings.cs</DependentUpon>
+    </EmbeddedResource>
+    <Compile Include="UI\SplitSettingFrame.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="UI\SplitSettingFrame.Designer.cs">
+      <DependentUpon>SplitSettingFrame.cs</DependentUpon>
+    </Compile>
+    <EmbeddedResource Include="UI\SplitSettingFrame.resx">
+      <DependentUpon>SplitSettingFrame.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\Split\RavenSplitSetting.resx">
+      <DependentUpon>RavenSplitSetting.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\Split\ItemSplitSetting.resx">
+      <DependentUpon>ItemSplitSetting.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\Split\EndingSplitSetting.resx">
+      <DependentUpon>EndingSplitSetting.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\Split\ManualSplitSetting.resx">
+      <DependentUpon>ManualSplitSetting.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\Split\AchievementSplitSetting.resx">
+      <DependentUpon>AchievementSplitSetting.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\Split\ScreenSplitSetting.resx">
+      <DependentUpon>ScreenSplitSetting.cs</DependentUpon>
+    </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
- </Project>
+</Project>
