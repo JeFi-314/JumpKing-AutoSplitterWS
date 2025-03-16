@@ -16,28 +16,23 @@ using System.Xml;
 
 namespace LiveSplit.JumpKingWS;
 public class Component : IComponent {
-	public string ComponentName { get { return "JumpKing AutoSplitterWS"; } }
+	public string ComponentName => "JumpKing AutoSplitterWS";
+	private static readonly LinkedList<Component> InstanceList = [];
+	private readonly LinkedListNode<Component> instanceNode;
 	public static TimerModel Timer { get; private set; }
 	public static LiveSplitState State => Timer?.CurrentState; 
 	public static IRun Run => Timer?.CurrentState?.Run; 
 	public static Settings Settings;
-	public static ConcurrentQueue<Action> ActionQueue;
-	public static Component Instance;
+	public static readonly ConcurrentQueue<Action> ActionQueue = [];
 	private static int startGameTicks = 0;
 	private static int lastGameTicks = 0;
 
 	public Component(LiveSplitState state) 
 	{
-		if (Instance != null) {
-			Debug.WriteLine("Try to create multiple instances of autospliter component");
-			return;
-		}
-		Instance = this;
-#if DEBUG
-		Debugger.Launch();
-#endif
+		instanceNode = new LinkedListNode<Component>(this);
+		InstanceList.AddLast(instanceNode);
+		if (InstanceList.Count > 1) return;
 
-		ActionQueue = [];
 		CommunicationWrapper.Start();
 		Settings = new Settings();
 
@@ -56,11 +51,8 @@ public class Component : IComponent {
 
 	public void Update(IInvalidator invalidator, LiveSplitState lvstate, float width, float height, LayoutMode mode) 
 	{
-		if (this != Instance) 
-		{
-			return;
-		}
-		
+		if (instanceNode != InstanceList.First) return;
+
 		while (ActionQueue.TryDequeue(out var action))
 		{
 			try
@@ -76,11 +68,6 @@ public class Component : IComponent {
 
 	public static void UpdateGameTime(int currentTicks)
 	{
-		if (Instance == null) 
-		{
-			return;
-		}
-
         if (currentTicks == lastGameTicks)
         {
             State.IsGameTimePaused = true;
@@ -101,7 +88,7 @@ public class Component : IComponent {
 		startGameTicks = gameTicks;
 	}
 
-	public Control GetSettingsControl(LayoutMode mode) => Settings;
+	public Control GetSettingsControl(LayoutMode mode) => instanceNode == InstanceList.First ? Settings : new UserControl();
 	public void SetSettings(XmlNode xmlNode)
 	{
 		SplitManager.SetSplitFromXml(xmlNode["Splits"]);
@@ -116,7 +103,7 @@ public class Component : IComponent {
 	{ 
 		int hash = 0;
 		hash ^= SplitManager.GetHash();
-		Debug.WriteLine(hash);
+		// Debug.WriteLine(hash);
 		return hash;
 	}
 
@@ -152,15 +139,18 @@ public class Component : IComponent {
 
 	#endregion
 
+	// NOTE: From LiveSplit.View.TimerForm.SetLayout(layout),
+	// if new layout and current Layout have same Component instance,
+	// component.Dispose() won't be called. 
+	// So using singleton might not work correctly.
 	public void Dispose() 
 	{
-		if (this != Instance) {
-			return;
-		}
-		Instance = null;
+		InstanceList.Remove(instanceNode);
+		if (InstanceList.Count > 0) return;
 
-		ActionQueue = null;
+		while (ActionQueue.TryDequeue(out var _)) {}
 		CommunicationWrapper.Stop();
+		Settings.Dispose();
 		Settings = null;
 		if (Timer != null) {
 			State.OnReset -= OnReset;
@@ -172,6 +162,8 @@ public class Component : IComponent {
 			State.OnSkipSplit -= OnSkipSplit;
 		}
 		Timer = null;
+
+		Debug.WriteLine("component disposed");
 	}
 
 	//Ignore UI settings on autosplitter component
