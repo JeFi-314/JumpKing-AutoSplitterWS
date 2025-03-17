@@ -1,5 +1,6 @@
 ﻿using CommonCom.Util;
 using LiveSplit.JumpKingWS.Communication;
+using LiveSplit.JumpKingWS.Split;
 using LiveSplit.JumpKingWS.State;
 using LiveSplit.JumpKingWS.UI;
 using LiveSplit.Model;
@@ -15,28 +16,23 @@ using System.Xml;
 
 namespace LiveSplit.JumpKingWS;
 public class Component : IComponent {
-	public string ComponentName { get { return "JumpKing AutoSplitterWS"; } }
+	public string ComponentName => "JumpKing AutoSplitterWS";
+	private static readonly LinkedList<Component> InstanceList = [];
+	private readonly LinkedListNode<Component> instanceNode;
 	public static TimerModel Timer { get; private set; }
 	public static LiveSplitState State => Timer?.CurrentState; 
 	public static IRun Run => Timer?.CurrentState?.Run; 
 	public static Settings Settings;
-	public static ConcurrentQueue<Action> ActionQueue;
-	public static Component Instance;
+	public static readonly ConcurrentQueue<Action> ActionQueue = [];
 	private static int startGameTicks = 0;
 	private static int lastGameTicks = 0;
 
 	public Component(LiveSplitState state) 
 	{
-		if (Instance != null) {
-			Debug.WriteLine("Try to create multiple instances of autospliter component");
-			return;
-		}
-		Instance = this;
-#if DEBUG
-		Debugger.Launch();
-#endif
+		instanceNode = new LinkedListNode<Component>(this);
+		InstanceList.AddLast(instanceNode);
+		if (InstanceList.Count > 1) return;
 
-		ActionQueue = [];
 		CommunicationWrapper.Start();
 		Settings = new Settings();
 
@@ -51,15 +47,14 @@ public class Component : IComponent {
 		state.OnSplit += OnSplit;
 		state.OnUndoSplit += OnUndoSplit;
 		state.OnSkipSplit += OnSkipSplit;
+		
+		Debug.WriteLine("[Component] Component initialized");
 	}
 
 	public void Update(IInvalidator invalidator, LiveSplitState lvstate, float width, float height, LayoutMode mode) 
 	{
-		if (this != Instance) 
-		{
-			return;
-		}
-		
+		if (instanceNode != InstanceList.First) return;
+
 		while (ActionQueue.TryDequeue(out var action))
 		{
 			try
@@ -68,18 +63,13 @@ public class Component : IComponent {
 			}
 			catch (Exception ex)
 			{
-				Debug.WriteLine($"Exception: {ex}");
+				Debug.WriteLine($"[Component] Exception in Update: {ex}");
 			}
 		}
 	}
 
 	public static void UpdateGameTime(int currentTicks)
 	{
-		if (Instance == null) 
-		{
-			return;
-		}
-
         if (currentTicks == lastGameTicks)
         {
             State.IsGameTimePaused = true;
@@ -100,12 +90,25 @@ public class Component : IComponent {
 		startGameTicks = gameTicks;
 	}
 
-	public Control GetSettingsControl(LayoutMode mode) { return Settings; }
-	public void SetSettings(XmlNode document) {}
-	public XmlNode GetSettings(XmlDocument document) { return document.CreateElement("Settings"); }
+	public Control GetSettingsControl(LayoutMode mode) => instanceNode == InstanceList.First ? Settings : new UserControl();
+	public void SetSettings(XmlNode node)
+	{
+		Settings.LoadFromXml(node);
+		SplitManager.SetSplitFromXml(node["Splits"]);
+	}
+	public XmlNode GetSettings(XmlDocument doc)
+	{
+		XmlElement ele = doc.CreateElement("Settings");
+		Settings.SaveToXml(doc, ele);
+		ele.AppendChild(SplitManager.GetXmlElement(doc));
+		return ele;
+	}
 	public int GetSettingsHashCode()
 	{ 
-		return GetSettings(new XmlDocument()).OuterXml.GetStableHashCode();
+		int hash = 0;
+		hash ^= SplitManager.GetHash();
+		// Debug.WriteLine(hash);
+		return hash;
 	}
 
 	#region LiveSplitState Events
@@ -117,38 +120,49 @@ public class Component : IComponent {
 		ItemState.Reset();
 		RavenState.Reset();
 		ScreenState.Reset();
+
+		Debug.WriteLine($"[Timer] Reset");
 	}
 	public void OnPause(object sender, EventArgs e) 
 	{
+		Debug.WriteLine($"[Timer] Pause");
 	}
 	public void OnResume(object sender, EventArgs e) 
 	{
+		Debug.WriteLine($"[Timer] Resume");
 	}
 	public void OnStart(object sender, EventArgs e) 
 	{
 		SetStartTicks();
+		Debug.WriteLine($"[Timer] Start");
 	}
 	public void OnSplit(object sender, EventArgs e) 
 	{
+		Debug.WriteLine($"[Timer] Split");
 	}
 	public void OnUndoSplit(object sender, EventArgs e) 
 	{
+		Debug.WriteLine($"[Timer] UndoSplit");
 	}
 	public void OnSkipSplit(object sender, EventArgs e) 
 	{
+		Debug.WriteLine($"[Timer] SkipSplit");
 	}
 
 	#endregion
 
+	// NOTE: From LiveSplit.View.TimerForm.SetLayout(layout),
+	// if new layout and current Layout have same Component instance,
+	// component.Dispose() won't be called. 
+	// So using singleton might not work correctly.
 	public void Dispose() 
 	{
-		if (this != Instance) {
-			return;
-		}
-		Instance = null;
+		InstanceList.Remove(instanceNode);
+		if (InstanceList.Count > 0) return;
 
-		ActionQueue = null;
 		CommunicationWrapper.Stop();
+		while (ActionQueue.TryDequeue(out var _)) {}
+		Settings.Dispose();
 		Settings = null;
 		if (Timer != null) {
 			State.OnReset -= OnReset;
@@ -160,6 +174,8 @@ public class Component : IComponent {
 			State.OnSkipSplit -= OnSkipSplit;
 		}
 		Timer = null;
+
+		Debug.WriteLine("[Component] Component disposed");
 	}
 
 	//Ignore UI settings on autosplitter component

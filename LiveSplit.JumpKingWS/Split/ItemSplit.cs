@@ -10,37 +10,39 @@ namespace LiveSplit.JumpKingWS.Split;
 
 public class ItemSplit: SplitBase
 {
+    const string ITEM = "Item";
+    const string COUNT = "Count";
     public override SplitType SplitType => SplitType.Item;
-    public override string FullName => $"{SplitType.GetName()}-{item.GetName()},{count}";
-    public Item item;
-    public int count;
+    public override string FullName => $"{SplitType.GetName()}-{Item.GetName()},{Count}";
+    public Item Item;
+    public int Count;
     
     public ItemSplit(): base() {}
     public ItemSplit(Item p_item, int p_count) {
-        item = p_item;
-        count = p_count;
+        Item = p_item;
+        Count = p_count;
     }
     public ItemSplit(XmlNode node): base(node) {}
     protected override void SetDefault()
     {
-        item = (Item)0;
-        count = 1;
+        Item = (Item)0;
+        Count = 1;
     }
     public override void SetFromXml(XmlNode node)
     {
-        item = (Item)int.Parse(node.Attributes["count"].Name);
-        count = int.Parse(node.Attributes["count"].Name);
+        Item = (Item)int.Parse(node[ITEM].InnerText);
+        Count = int.Parse(node[COUNT].InnerText);
     }
     public override XmlElement GetXmlElement(XmlDocument document)
     {
         XmlElement splitElement = base.GetXmlElement(document);
 
-        XmlElement itemElement = document.CreateElement("Item");
-        itemElement.InnerText = ((int)item).ToString();
+        XmlElement itemElement = document.CreateElement(ITEM);
+        itemElement.InnerText = ((int)Item).ToString();
         splitElement.AppendChild(itemElement);
 
-        XmlElement countElement = document.CreateElement("Count");
-        countElement.InnerText = count.ToString();
+        XmlElement countElement = document.CreateElement(COUNT);
+        countElement.InnerText = Count.ToString();
         splitElement.AppendChild(countElement);
 
         return splitElement;
@@ -48,7 +50,7 @@ public class ItemSplit: SplitBase
 
     public override bool CheckSplit()
     {
-        return ItemState.HasItems(item, count);
+        return ItemState.HasItems(Item, Count);
     }
     // public override void OnSplit(int splitIndex)
     public override UndoResult CheckUndo()

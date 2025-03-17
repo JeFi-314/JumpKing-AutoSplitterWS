@@ -4,23 +4,20 @@ using CommonCom.Util;
 namespace LiveSplit.JumpKingWS.State;
 public static class EndingState
 {
-    private static string lastEndingName;
+    private static Ending? lastEnding;
     static EndingState() {
-        lastEndingName = "";
+        lastEnding = null;
     }
 
     public static void Reset() {
-        lastEndingName = "";
+        lastEnding = null;
     }
 
     public static void SetEnding(Ending ending) {
-        SetEnding(ending.GetName());
-    }
-    public static void SetEnding(string endingName) {
-        lastEndingName = endingName;
+        lastEnding = ending;
     }
 
-    public static bool CheckEnding(string endingName) {
-        return (lastEndingName!=string.Empty) && (endingName==lastEndingName);
+    public static bool CheckEnding(Ending ending) {
+        return (lastEnding!=null) && (ending==lastEnding);
     }
 }

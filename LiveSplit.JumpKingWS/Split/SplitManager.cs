@@ -3,33 +3,20 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Xml;
 using CommonCom;
+using LiveSplit.JumpKingWS.UI;
 
 namespace LiveSplit.JumpKingWS.Split;
 
 public static class SplitManager
 {
-    public static List<SplitBase> SplitList {get; private set; }
+    public readonly static List<SplitBase> SplitList;
     private static (int, SplitBase)? undoSplit;
-    private static int currentIndex => Component.State?.CurrentSplitIndex ?? -1;
+    private static int CurrentIndex => Component.State?.CurrentSplitIndex ?? -1;
 
     static SplitManager()
     {
-        SplitList = [
-            new ScreenSplit(6),
-            new ScreenSplit(11),
-            new ScreenSplit(15),
-            new ScreenSplit(20),
-            new ScreenSplit(26),
-            new ScreenSplit(33),
-            new ScreenSplit(37),
-            new ScreenSplit(40),
-            // new RavenSplit("raven", 0),
-            // new ItemSplit(Item.Cap, 1),
-            // new AchievementSplit(Achievement.JUMP_1000),
-            new EndingSplit(Ending.Normal),
-        ];
+        SplitList = [];
         undoSplit = null;
-        // Debug.WriteLine(GetXmlElement(new XmlDocument()).OuterXml);
     }
 
     public static void Clear()
@@ -44,25 +31,27 @@ public static class SplitManager
 
     public static void SetUndoSplit(int index, SplitBase split)
     {
-        Debug.WriteLine($"[UndoSplit] Add undosplit {split.SplitType} at {index}");
+        if (!Settings.isUndoSplit) return;
+
+        Debug.WriteLine($"[Split] Add undoSplit {split.SplitType} at {index}");
         if (undoSplit==null) {
             undoSplit = (index, split);
         }
     }
     public static void RemoveUndoSplit()
     {
-        Debug.WriteLine($"[UndoSplit] Remove undosplit");
+        Debug.WriteLine($"[Split] Remove undoSplit");
         undoSplit = null;
     }
 
     public static void SetSplitFromXml(XmlNode splitsNode)
     {
         Clear();
-        foreach (XmlNode node in splitsNode.ChildNodes)
+        foreach (XmlNode node in splitsNode.SelectNodes(".//Split"))
         {
             try
             {
-                switch(node.Name) 
+                switch(node.Attributes["type"]?.Value) 
                 {
                     case "Manual":
                         SplitList.Add(new ManualSplit(node));
@@ -109,16 +98,15 @@ public static class SplitManager
 
     public static void UpdatSplits()
     {
-        int lastIndex = currentIndex-1;
-        int undoIndex;
+        int lastIndex, undoIndex;
         SplitBase split;
         bool isSkip = false;
-        while (0<=currentIndex && currentIndex<SplitList.Count)
+        while (0<=CurrentIndex && CurrentIndex<SplitList.Count)
         {
-            lastIndex = currentIndex;
-            split = SplitList[currentIndex];
+            lastIndex = CurrentIndex;
+            split = SplitList[CurrentIndex];
             if (split.CheckSplit()) {
-                if (!isSkip || currentIndex == Component.Run.Count-1) {
+                if (!isSkip || CurrentIndex == Component.Run.Count-1) {
                     isSkip = true;
                     Component.Timer.Split();
                 } else {
@@ -126,7 +114,7 @@ public static class SplitManager
                 }
             }
 
-            if (currentIndex==lastIndex) {
+            if (CurrentIndex==lastIndex) {
                 break;
             } else {
                 split.OnSplit(lastIndex);
@@ -140,12 +128,12 @@ public static class SplitManager
                 case UndoResult.Skip:
                     break;
                 case UndoResult.Undo:
-                    while (currentIndex>undoIndex) {
-                        lastIndex = currentIndex;
+                    while (CurrentIndex>undoIndex) {
+                        lastIndex = CurrentIndex;
                         Component.Timer.UndoSplit();
-                        if (currentIndex==lastIndex) break;
+                        if (CurrentIndex==lastIndex) break;
                     }
-                    if (currentIndex==undoIndex) {
+                    if (CurrentIndex==undoIndex) {
                         RemoveUndoSplit();
                     }
                     break;
@@ -154,5 +142,25 @@ public static class SplitManager
                     break;
             }
         }
+    }
+
+    public static int GetHash()
+    {
+        const int Int32BitSize = 32;
+        int hash = 0;
+        int shift = 0;
+        int quotient = 0;
+        int h;
+        foreach (var split in SplitList) {
+            h = split.GetHash()+quotient;
+            h = (h<<shift)|(h>>(Int32BitSize-shift));
+            hash ^= h;
+            shift++;
+            if (shift>=Int32BitSize) {
+                shift -= Int32BitSize;
+                quotient++;
+            }
+        }
+        return hash;
     }
 }
