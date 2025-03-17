@@ -35,7 +35,7 @@ public partial class AchievementSplitSetting : SplitSetting
                 e.Value = code.GetName();
             }
         };
-        comboBox_Achievement.SelectedItem = achievementSplit.code;
+        comboBox_Achievement.SelectedItem = achievementSplit.Code;
     }
     protected override void AddHandlers() 
     {
@@ -47,6 +47,6 @@ public partial class AchievementSplitSetting : SplitSetting
     }
     private void OnCodeChanged(object sender, EventArgs e)
     {
-        achievementSplit.code = (Achievement)comboBox_Achievement.SelectedItem;
+        achievementSplit.Code = (Achievement)comboBox_Achievement.SelectedItem;
     }
 }

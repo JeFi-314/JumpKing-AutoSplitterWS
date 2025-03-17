@@ -39,10 +39,9 @@ public partial class ItemSplitSetting : SplitSetting
                 e.Value = item.GetName();
             }
         };
+        comboBox_Item.SelectedItem = itemSplit.Item;
 
-        comboBox_Item.SelectedItem = itemSplit.item;
-
-        numericUpDown_Count.Value = itemSplit.count;
+        numericUpDown_Count.Value = itemSplit.Count;
     }
     protected override void AddHandlers() 
     {
@@ -56,11 +55,11 @@ public partial class ItemSplitSetting : SplitSetting
     }
     private void OnItemChanged(object sender, EventArgs e)
     {
-        itemSplit.item = (Item)comboBox_Item.SelectedItem;
+        itemSplit.Item = (Item)comboBox_Item.SelectedItem;
     }
     private void OnCountChanged(object sender, EventArgs e)
     {
-        itemSplit.count = (int)numericUpDown_Count.Value;
+        itemSplit.Count = (int)numericUpDown_Count.Value;
     }
 
 }

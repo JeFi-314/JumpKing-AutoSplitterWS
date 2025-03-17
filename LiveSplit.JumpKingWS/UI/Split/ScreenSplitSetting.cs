@@ -26,7 +26,7 @@ public partial class ScreenSplitSetting : SplitSetting
 
     protected override void SetupControlValues()
     {
-        numericUpDown_Number.Value = screenSplit.number;
+        numericUpDown_Number.Value = screenSplit.Number;
     }
     protected override void AddHandlers() 
     {
@@ -39,6 +39,6 @@ public partial class ScreenSplitSetting : SplitSetting
 
     private void OnNumberChanged(object sender, EventArgs e)
     {
-        screenSplit.number = (int)numericUpDown_Number.Value;
+        screenSplit.Number = (int)numericUpDown_Number.Value;
     }
 }

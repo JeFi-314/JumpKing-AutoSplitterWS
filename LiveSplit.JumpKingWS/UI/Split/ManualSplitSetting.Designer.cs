@@ -51,6 +51,7 @@
             this.Margin = new System.Windows.Forms.Padding(0);
             this.Name = "ManualSplitSetting";
             this.Size = new System.Drawing.Size(200, 22);
+            this.TabStop = false;
             this.ResumeLayout(false);
 
         }
