@@ -10,32 +10,31 @@ namespace LiveSplit.JumpKingWS.Split;
 
 public class EndingSplit: SplitBase
 {
-    const string ENDINGNAME = "EndingName";
+    const string ENDING = "Ending";
     public override SplitType SplitType => SplitType.Ending;
-    public override string FullName => $"{SplitType.GetName()}-{endingName}";
-    public string endingName;
+    public override string FullName => $"{SplitType.GetName()}-{Ending.GetName()}";
+    public Ending Ending;
 
     public EndingSplit(): base() {}
-    public EndingSplit(string p_endingName = "") 
+    public EndingSplit(Ending p_endingName) 
     {
-        endingName = p_endingName;
+        Ending = p_endingName;
     }
-    public EndingSplit(Ending ending): this(ending.GetName()) {}
     public EndingSplit(XmlNode node): base(node) {}
     protected override void SetDefault()
     {
-        endingName = "";
+        Ending = Ending.Normal;
     }
     public override void SetFromXml(XmlNode node)
     {
-        endingName = node[ENDINGNAME].InnerText;
+        Ending = (Ending)int.Parse(node[ENDING].InnerText);
     }
     public override XmlElement GetXmlElement(XmlDocument document)
     {
         XmlElement splitElement = base.GetXmlElement(document);
         
-        XmlElement endingElement = document.CreateElement(ENDINGNAME);
-        endingElement.InnerText = endingName;
+        XmlElement endingElement = document.CreateElement(ENDING);
+        endingElement.InnerText = ((int)Ending).ToString();
         splitElement.AppendChild(endingElement);
 
         return splitElement;
@@ -43,7 +42,7 @@ public class EndingSplit: SplitBase
 
     public override bool CheckSplit()
     {
-        return EndingState.CheckEnding(endingName);
+        return EndingState.CheckEnding(Ending);
     }
     // public override void OnSplit(int splitIndex)
     public override UndoResult CheckUndo()
