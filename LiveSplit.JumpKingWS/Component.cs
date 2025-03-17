@@ -47,6 +47,8 @@ public class Component : IComponent {
 		state.OnSplit += OnSplit;
 		state.OnUndoSplit += OnUndoSplit;
 		state.OnSkipSplit += OnSkipSplit;
+		
+		Debug.WriteLine("[Component] Component initialized");
 	}
 
 	public void Update(IInvalidator invalidator, LiveSplitState lvstate, float width, float height, LayoutMode mode) 
@@ -61,7 +63,7 @@ public class Component : IComponent {
 			}
 			catch (Exception ex)
 			{
-				Debug.WriteLine($"Exception: {ex}");
+				Debug.WriteLine($"[Component] Exception in Update: {ex}");
 			}
 		}
 	}
@@ -89,15 +91,17 @@ public class Component : IComponent {
 	}
 
 	public Control GetSettingsControl(LayoutMode mode) => instanceNode == InstanceList.First ? Settings : new UserControl();
-	public void SetSettings(XmlNode xmlNode)
+	public void SetSettings(XmlNode node)
 	{
-		SplitManager.SetSplitFromXml(xmlNode["Splits"]);
+		Settings.LoadFromXml(node);
+		SplitManager.SetSplitFromXml(node["Splits"]);
 	}
-	public XmlNode GetSettings(XmlDocument document)
+	public XmlNode GetSettings(XmlDocument doc)
 	{
-		XmlElement xmlElement = document.CreateElement("Settings");
-		xmlElement.AppendChild(SplitManager.GetXmlElement(document));
-		return xmlElement;
+		XmlElement ele = doc.CreateElement("Settings");
+		Settings.SaveToXml(doc, ele);
+		ele.AppendChild(SplitManager.GetXmlElement(doc));
+		return ele;
 	}
 	public int GetSettingsHashCode()
 	{ 
@@ -116,25 +120,33 @@ public class Component : IComponent {
 		ItemState.Reset();
 		RavenState.Reset();
 		ScreenState.Reset();
+
+		Debug.WriteLine($"[Timer] Reset");
 	}
 	public void OnPause(object sender, EventArgs e) 
 	{
+		Debug.WriteLine($"[Timer] Pause");
 	}
 	public void OnResume(object sender, EventArgs e) 
 	{
+		Debug.WriteLine($"[Timer] Resume");
 	}
 	public void OnStart(object sender, EventArgs e) 
 	{
 		SetStartTicks();
+		Debug.WriteLine($"[Timer] Start");
 	}
 	public void OnSplit(object sender, EventArgs e) 
 	{
+		Debug.WriteLine($"[Timer] Split");
 	}
 	public void OnUndoSplit(object sender, EventArgs e) 
 	{
+		Debug.WriteLine($"[Timer] UndoSplit");
 	}
 	public void OnSkipSplit(object sender, EventArgs e) 
 	{
+		Debug.WriteLine($"[Timer] SkipSplit");
 	}
 
 	#endregion
@@ -148,8 +160,8 @@ public class Component : IComponent {
 		InstanceList.Remove(instanceNode);
 		if (InstanceList.Count > 0) return;
 
-		while (ActionQueue.TryDequeue(out var _)) {}
 		CommunicationWrapper.Stop();
+		while (ActionQueue.TryDequeue(out var _)) {}
 		Settings.Dispose();
 		Settings = null;
 		if (Timer != null) {
@@ -163,7 +175,7 @@ public class Component : IComponent {
 		}
 		Timer = null;
 
-		Debug.WriteLine("component disposed");
+		Debug.WriteLine("[Component] Component disposed");
 	}
 
 	//Ignore UI settings on autosplitter component

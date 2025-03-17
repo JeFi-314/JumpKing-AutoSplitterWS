@@ -43,9 +43,9 @@ partial class Settings
     {
             this.components = new System.ComponentModel.Container();
             this.flow_Upper = new System.Windows.Forms.FlowLayoutPanel();
-            this.checkBox1 = new System.Windows.Forms.CheckBox();
-            this.checkBox2 = new System.Windows.Forms.CheckBox();
-            this.checkBox3 = new System.Windows.Forms.CheckBox();
+            this.checkBox_AutoStart = new System.Windows.Forms.CheckBox();
+            this.checkBox_AutoReset = new System.Windows.Forms.CheckBox();
+            this.checkBox_Undo = new System.Windows.Forms.CheckBox();
             this.flow_SplitSettings = new System.Windows.Forms.FlowLayoutPanel();
             this.toolTip = new System.Windows.Forms.ToolTip(this.components);
             this.flow_Upper.SuspendLayout();
@@ -53,44 +53,47 @@ partial class Settings
             // 
             // flow_Upper
             // 
-            this.flow_Upper.Controls.Add(this.checkBox1);
-            this.flow_Upper.Controls.Add(this.checkBox2);
-            this.flow_Upper.Controls.Add(this.checkBox3);
+            this.flow_Upper.Controls.Add(this.checkBox_AutoStart);
+            this.flow_Upper.Controls.Add(this.checkBox_AutoReset);
+            this.flow_Upper.Controls.Add(this.checkBox_Undo);
             this.flow_Upper.Dock = System.Windows.Forms.DockStyle.Top;
             this.flow_Upper.Location = new System.Drawing.Point(3, 3);
             this.flow_Upper.Name = "flow_Upper";
             this.flow_Upper.Size = new System.Drawing.Size(474, 30);
             this.flow_Upper.TabIndex = 0;
             // 
-            // checkBox1
+            // checkBox_AutoStart
             // 
-            this.checkBox1.AutoSize = true;
-            this.checkBox1.Location = new System.Drawing.Point(3, 3);
-            this.checkBox1.Name = "checkBox1";
-            this.checkBox1.Size = new System.Drawing.Size(77, 16);
-            this.checkBox1.TabIndex = 0;
-            this.checkBox1.Text = "checkBox1";
-            this.checkBox1.UseVisualStyleBackColor = true;
+            this.checkBox_AutoStart.AutoSize = true;
+            this.checkBox_AutoStart.Font = new System.Drawing.Font("PMingLiU", 10F);
+            this.checkBox_AutoStart.Location = new System.Drawing.Point(3, 3);
+            this.checkBox_AutoStart.Name = "checkBox_AutoStart";
+            this.checkBox_AutoStart.Size = new System.Drawing.Size(112, 18);
+            this.checkBox_AutoStart.TabIndex = 0;
+            this.checkBox_AutoStart.Text = "Auto Start Split";
+            this.checkBox_AutoStart.UseVisualStyleBackColor = true;
             // 
-            // checkBox2
+            // checkBox_AutoReset
             // 
-            this.checkBox2.AutoSize = true;
-            this.checkBox2.Location = new System.Drawing.Point(86, 3);
-            this.checkBox2.Name = "checkBox2";
-            this.checkBox2.Size = new System.Drawing.Size(77, 16);
-            this.checkBox2.TabIndex = 1;
-            this.checkBox2.Text = "checkBox2";
-            this.checkBox2.UseVisualStyleBackColor = true;
+            this.checkBox_AutoReset.AutoSize = true;
+            this.checkBox_AutoReset.Font = new System.Drawing.Font("PMingLiU", 10F);
+            this.checkBox_AutoReset.Location = new System.Drawing.Point(121, 3);
+            this.checkBox_AutoReset.Name = "checkBox_AutoReset";
+            this.checkBox_AutoReset.Size = new System.Drawing.Size(117, 18);
+            this.checkBox_AutoReset.TabIndex = 1;
+            this.checkBox_AutoReset.Text = "Auto Reset Split";
+            this.checkBox_AutoReset.UseVisualStyleBackColor = true;
             // 
-            // checkBox3
+            // checkBox_Undo
             // 
-            this.checkBox3.AutoSize = true;
-            this.checkBox3.Location = new System.Drawing.Point(169, 3);
-            this.checkBox3.Name = "checkBox3";
-            this.checkBox3.Size = new System.Drawing.Size(77, 16);
-            this.checkBox3.TabIndex = 2;
-            this.checkBox3.Text = "checkBox3";
-            this.checkBox3.UseVisualStyleBackColor = true;
+            this.checkBox_Undo.AutoSize = true;
+            this.checkBox_Undo.Font = new System.Drawing.Font("PMingLiU", 10F);
+            this.checkBox_Undo.Location = new System.Drawing.Point(244, 3);
+            this.checkBox_Undo.Name = "checkBox_Undo";
+            this.checkBox_Undo.Size = new System.Drawing.Size(86, 18);
+            this.checkBox_Undo.TabIndex = 2;
+            this.checkBox_Undo.Text = "Undo Split";
+            this.checkBox_Undo.UseVisualStyleBackColor = true;
             // 
             // flow_SplitSettings
             // 
@@ -117,7 +120,7 @@ partial class Settings
             this.MinimumSize = new System.Drawing.Size(480, 400);
             this.Name = "Settings";
             this.Padding = new System.Windows.Forms.Padding(3);
-            this.Size = new System.Drawing.Size(470, 470);
+            this.Size = new System.Drawing.Size(480, 470);
             this.Load += new System.EventHandler(this.Settings_Load);
             this.flow_Upper.ResumeLayout(false);
             this.flow_Upper.PerformLayout();
@@ -130,7 +133,7 @@ partial class Settings
     private System.Windows.Forms.FlowLayoutPanel flow_Upper;
     private System.Windows.Forms.FlowLayoutPanel flow_SplitSettings;
     private System.Windows.Forms.ToolTip toolTip;
-    private System.Windows.Forms.CheckBox checkBox1;
-    private System.Windows.Forms.CheckBox checkBox2;
-    private System.Windows.Forms.CheckBox checkBox3;
+    private System.Windows.Forms.CheckBox checkBox_AutoStart;
+    private System.Windows.Forms.CheckBox checkBox_AutoReset;
+    private System.Windows.Forms.CheckBox checkBox_Undo;
 }

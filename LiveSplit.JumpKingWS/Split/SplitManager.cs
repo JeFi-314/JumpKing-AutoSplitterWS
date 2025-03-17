@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Xml;
 using CommonCom;
+using LiveSplit.JumpKingWS.UI;
 
 namespace LiveSplit.JumpKingWS.Split;
 
@@ -10,26 +11,12 @@ public static class SplitManager
 {
     public readonly static List<SplitBase> SplitList;
     private static (int, SplitBase)? undoSplit;
-    private static int currentIndex => Component.State?.CurrentSplitIndex ?? -1;
+    private static int CurrentIndex => Component.State?.CurrentSplitIndex ?? -1;
 
     static SplitManager()
     {
-        SplitList = [
-            new ScreenSplit(6),
-            new ScreenSplit(11),
-            new ScreenSplit(15),
-            new ScreenSplit(20),
-            new ScreenSplit(26),
-            // new ScreenSplit(33),
-            // new ScreenSplit(37),
-            // new ScreenSplit(40),
-            new RavenSplit("raven", 1),
-            new ItemSplit(Item.Cap, 1),
-            new AchievementSplit(Achievement.FALL_100),
-            new EndingSplit(Ending.Normal),
-        ];
+        SplitList = [];
         undoSplit = null;
-        // Debug.WriteLine(GetXmlElement(new XmlDocument()).OuterXml);
     }
 
     public static void Clear()
@@ -44,14 +31,16 @@ public static class SplitManager
 
     public static void SetUndoSplit(int index, SplitBase split)
     {
-        Debug.WriteLine($"[UndoSplit] Add undosplit {split.SplitType} at {index}");
+        if (!Settings.isUndoSplit) return;
+
+        Debug.WriteLine($"[Split] Add undoSplit {split.SplitType} at {index}");
         if (undoSplit==null) {
             undoSplit = (index, split);
         }
     }
     public static void RemoveUndoSplit()
     {
-        Debug.WriteLine($"[UndoSplit] Remove undosplit");
+        Debug.WriteLine($"[Split] Remove undoSplit");
         undoSplit = null;
     }
 
@@ -109,16 +98,15 @@ public static class SplitManager
 
     public static void UpdatSplits()
     {
-        int lastIndex = currentIndex-1;
-        int undoIndex;
+        int lastIndex, undoIndex;
         SplitBase split;
         bool isSkip = false;
-        while (0<=currentIndex && currentIndex<SplitList.Count)
+        while (0<=CurrentIndex && CurrentIndex<SplitList.Count)
         {
-            lastIndex = currentIndex;
-            split = SplitList[currentIndex];
+            lastIndex = CurrentIndex;
+            split = SplitList[CurrentIndex];
             if (split.CheckSplit()) {
-                if (!isSkip || currentIndex == Component.Run.Count-1) {
+                if (!isSkip || CurrentIndex == Component.Run.Count-1) {
                     isSkip = true;
                     Component.Timer.Split();
                 } else {
@@ -126,7 +114,7 @@ public static class SplitManager
                 }
             }
 
-            if (currentIndex==lastIndex) {
+            if (CurrentIndex==lastIndex) {
                 break;
             } else {
                 split.OnSplit(lastIndex);
@@ -140,12 +128,12 @@ public static class SplitManager
                 case UndoResult.Skip:
                     break;
                 case UndoResult.Undo:
-                    while (currentIndex>undoIndex) {
-                        lastIndex = currentIndex;
+                    while (CurrentIndex>undoIndex) {
+                        lastIndex = CurrentIndex;
                         Component.Timer.UndoSplit();
-                        if (currentIndex==lastIndex) break;
+                        if (CurrentIndex==lastIndex) break;
                     }
-                    if (currentIndex==undoIndex) {
+                    if (CurrentIndex==undoIndex) {
                         RemoveUndoSplit();
                     }
                     break;

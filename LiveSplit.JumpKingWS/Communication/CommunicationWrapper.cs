@@ -26,6 +26,7 @@ using System;
 using CommonCom;
 using LiveSplit.JumpKingWS.Split;
 using LiveSplit.JumpKingWS.State;
+using LiveSplit.JumpKingWS.UI;
 
 namespace LiveSplit.JumpKingWS.Communication;
 
@@ -94,7 +95,7 @@ public static class CommunicationWrapper {
     }
 
     public static void OnGameLoopStart(int ticks) {
-        Component.Timer.Start();
+        if (Settings.isAutoStartSplit) Component.Timer?.Start();
         Component.UpdateGameTime(ticks);
         EndingState.Reset();
     }
@@ -106,6 +107,7 @@ public static class CommunicationWrapper {
     }
 
     public static void OnRestart() {
+        if (Settings.isAutoResetSplit) Component.Timer?.Reset();
         ScreenState.Reset();
         RavenState.Reset();
     }
