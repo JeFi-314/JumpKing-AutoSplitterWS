@@ -33,11 +33,13 @@ public partial class RavenSplitSetting : SplitSetting
     {
         combo_RavenName.TextChanged += OnRavenNameChanged;
         numericUpDown_HomeIndex.ValueChanged += OnHomeIndexChanged;
+        combo_RavenName.Resize += OnComboBoxResize;
     }
     protected override void RemoveHandlers() 
     {
         combo_RavenName.TextChanged -= OnRavenNameChanged;
         numericUpDown_HomeIndex.ValueChanged -= OnHomeIndexChanged;
+        combo_RavenName.Resize -= OnComboBoxResize;
     }
 
     private void OnRavenNameChanged(object sender, EventArgs e)
@@ -49,4 +51,14 @@ public partial class RavenSplitSetting : SplitSetting
         ravenSplit.HomeIndex1 = (int)numericUpDown_HomeIndex.Value;
     }
 
+    // Taken from https://stackoverflow.com/questions/25901015
+    // avoid combobox text get highlight after init
+    private void OnComboBoxResize(object sender, EventArgs e)
+    {
+        var box = (ComboBox)sender;
+        if (!box.IsHandleCreated)
+            return;  // avoid possible exception
+
+        box.BeginInvoke(new Action(() => box.SelectionLength = 0));
+    }
 }
