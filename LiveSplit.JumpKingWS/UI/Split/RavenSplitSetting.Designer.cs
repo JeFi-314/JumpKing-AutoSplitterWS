@@ -30,7 +30,7 @@
         {
             this.table_Main = new System.Windows.Forms.TableLayoutPanel();
             this.numericUpDown_HomeIndex = new System.Windows.Forms.NumericUpDown();
-            this.textBox_RavenName = new System.Windows.Forms.TextBox();
+            this.combo_RavenName = new System.Windows.Forms.ComboBox();
             this.table_Main.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown_HomeIndex)).BeginInit();
             this.SuspendLayout();
@@ -38,11 +38,11 @@
             // table_Main
             // 
             this.table_Main.ColumnCount = 3;
-            this.table_Main.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 100F));
+            this.table_Main.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 110F));
             this.table_Main.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 60F));
             this.table_Main.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.table_Main.Controls.Add(this.numericUpDown_HomeIndex, 1, 0);
-            this.table_Main.Controls.Add(this.textBox_RavenName, 0, 0);
+            this.table_Main.Controls.Add(this.combo_RavenName, 0, 0);
             this.table_Main.Dock = System.Windows.Forms.DockStyle.Fill;
             this.table_Main.Location = new System.Drawing.Point(0, 0);
             this.table_Main.Margin = new System.Windows.Forms.Padding(0);
@@ -52,11 +52,22 @@
             this.table_Main.Size = new System.Drawing.Size(200, 22);
             this.table_Main.TabIndex = 0;
             // 
+            // combo_RavenName
+            // 
+            this.combo_RavenName.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.combo_RavenName.Font = new System.Drawing.Font("PMingLiU", 10F);
+            this.combo_RavenName.FormattingEnabled = true;
+            this.combo_RavenName.Location = new System.Drawing.Point(0, 0);
+            this.combo_RavenName.Margin = new System.Windows.Forms.Padding(0);
+            this.combo_RavenName.Name = "combo_RavenName";
+            this.combo_RavenName.Size = new System.Drawing.Size(110, 21);
+            this.combo_RavenName.TabIndex = 0;
+            // 
             // numericUpDown_HomeIndex
             // 
             this.numericUpDown_HomeIndex.Dock = System.Windows.Forms.DockStyle.Fill;
             this.numericUpDown_HomeIndex.Font = new System.Drawing.Font("PMingLiU", 9F);
-            this.numericUpDown_HomeIndex.Location = new System.Drawing.Point(100, 0);
+            this.numericUpDown_HomeIndex.Location = new System.Drawing.Point(110, 0);
             this.numericUpDown_HomeIndex.Margin = new System.Windows.Forms.Padding(0);
             this.numericUpDown_HomeIndex.Maximum = new decimal(new int[] {
             1024,
@@ -70,22 +81,12 @@
             0});
             this.numericUpDown_HomeIndex.Name = "numericUpDown_HomeIndex";
             this.numericUpDown_HomeIndex.Size = new System.Drawing.Size(60, 22);
-            this.numericUpDown_HomeIndex.TabIndex = 0;
+            this.numericUpDown_HomeIndex.TabIndex = 1;
             this.numericUpDown_HomeIndex.Value = new decimal(new int[] {
             1,
             0,
             0,
             0});
-            // 
-            // textBox_RavenName
-            // 
-            this.textBox_RavenName.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.textBox_RavenName.Font = new System.Drawing.Font("PMingLiU", 9F);
-            this.textBox_RavenName.Location = new System.Drawing.Point(0, 0);
-            this.textBox_RavenName.Margin = new System.Windows.Forms.Padding(0);
-            this.textBox_RavenName.Name = "textBox_RavenName";
-            this.textBox_RavenName.Size = new System.Drawing.Size(100, 22);
-            this.textBox_RavenName.TabIndex = 1;
             // 
             // RavenSplitSetting
             // 
@@ -94,7 +95,6 @@
             this.Name = "RavenSplitSetting";
             this.Size = new System.Drawing.Size(200, 22);
             this.table_Main.ResumeLayout(false);
-            this.table_Main.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown_HomeIndex)).EndInit();
             this.ResumeLayout(false);
 
@@ -104,6 +104,6 @@
 
         private System.Windows.Forms.TableLayoutPanel table_Main;
         private System.Windows.Forms.NumericUpDown numericUpDown_HomeIndex;
-        private System.Windows.Forms.TextBox textBox_RavenName;
+        private System.Windows.Forms.ComboBox combo_RavenName;
     }
 }
