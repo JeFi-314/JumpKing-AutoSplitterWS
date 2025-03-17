@@ -14,6 +14,7 @@ using LiveSplit.JumpKingWS.UI.Split;
 namespace LiveSplit.JumpKingWS.UI;
 public partial class SplitSettingFrame : UserControl
 {
+    private SplitType previousSplitType = SplitType.Manual;
     public SplitSetting SplitSetting {get; private set;} = null;
     public SplitSettingFrame(string splitName, SplitBase split = null)
     {
@@ -38,6 +39,7 @@ public partial class SplitSettingFrame : UserControl
             }
         };
         combo_SplitType.SelectedItem = split.SplitType;
+        previousSplitType = split.SplitType;
 
         SplitSetting = split.SplitType switch
         {
@@ -59,11 +61,12 @@ public partial class SplitSettingFrame : UserControl
 
     private void OnSplitTypeChanged(object sender, EventArgs e)
     {
-        table_Main.SuspendLayout();
-        if (SplitSetting!=null) {
-            RemoveSplitSetting();
-        }
         SplitType type = (SplitType)combo_SplitType.SelectedItem;
+        if (previousSplitType == type) return;
+        previousSplitType = type;
+
+        table_Main.SuspendLayout();
+        if (SplitSetting!=null) RemoveSplitSetting();
         SplitSetting = type switch
         {
             SplitType.Manual => new ManualSplitSetting(new ManualSplit()),

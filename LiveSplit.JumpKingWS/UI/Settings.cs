@@ -32,10 +32,11 @@ public partial class Settings : UserControl
         flow_SplitSettings.SuspendLayout();
         for (int i = 0; i<Component.Run.Count; i++) {
             var segment = Component.Run[i];
-            Debug.WriteLine($"[Setting] Add setting for split {segment.Name}");
-            var frame = i<SplitManager.SplitList.Count
-                ? new SplitSettingFrame(segment.Name, SplitManager.SplitList[i])
-                : new SplitSettingFrame(segment.Name);
+            var split = (0<=i & i<SplitManager.SplitList.Count) 
+                ? SplitManager.SplitList[i]
+                : null;
+            Debug.WriteLine($"[UI] Add split setting: {segment.Name} | {split?.FullName}");
+            var frame =  new SplitSettingFrame(segment.Name, split);
             flow_SplitSettings.Controls.Add(frame);
             SplitSettingFrames.Add(frame);
         }
@@ -56,7 +57,7 @@ public partial class Settings : UserControl
         }
         SplitSettingFrames.Clear();
         flow_SplitSettings.Controls.Clear();
-        Debug.WriteLine($"[Setting] Clear all split settings");
+        Debug.WriteLine($"[UI] Clear all split settings");
 
         if (isRegistedFormClosed) {
             form.FormClosed -= OnMainFormClosed;
