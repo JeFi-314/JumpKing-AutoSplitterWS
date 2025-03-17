@@ -4,7 +4,6 @@ using System.Diagnostics;
 using System.IO;
 using System.Reflection;
 
-
 using JumpKing.Mods;
 using AutoSplitterWS.Communication;
 using JumpKing;
@@ -20,7 +19,6 @@ public static class AutoSplitterWS
     const string IDENTIFIER = "JeFi.AutoSplitterWS";
     const string HARMONY_IDENTIFIER = "JeFi.AutoSplitterWS.Harmony";
     const string SETTINGS_FILE = "JeFi.AutoSplitterWS.Preferences.xml";
-
 
     public static string AssemblyPath { get; set; }
     public static Preferences Prefs { get; private set; }
@@ -98,7 +96,6 @@ public static class AutoSplitterWS
         Ending = EndingType.Normal;
     }
 
-#if DEBUG
     #region Menu Items
     [PauseMenuItemSetting]
     [MainMenuItemSetting]
@@ -107,5 +104,4 @@ public static class AutoSplitterWS
         return new ToggleScreenNumber();
     }
     #endregion
-#endif
 }
