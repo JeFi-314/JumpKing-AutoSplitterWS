@@ -9,8 +9,9 @@ using JumpKing.Mods;
 using AutoSplitterWS.Communication;
 using JumpKing;
 using JumpKing.GameManager.MultiEnding;
+using JumpKing.PauseMenu;
 
-// using AutoSplitterWS.Menu;
+using AutoSplitterWS.Menu;
 
 namespace AutoSplitterWS;
 [JumpKingMod(IDENTIFIER)]
@@ -18,8 +19,11 @@ public static class AutoSplitterWS
 {
     const string IDENTIFIER = "JeFi.AutoSplitterWS";
     const string HARMONY_IDENTIFIER = "JeFi.AutoSplitterWS.Harmony";
+    const string SETTINGS_FILE = "JeFi.AutoSplitterWS.Preferences.xml";
+
 
     public static string AssemblyPath { get; set; }
+    public static Preferences Prefs { get; private set; }
     public static bool isWin = false;
     public static EndingType Ending = EndingType.Normal;
 
@@ -33,6 +37,16 @@ public static class AutoSplitterWS
         // Harmony.DEBUG = true;
         // Environment.SetEnvironmentVariable("HARMONY_LOG_FILE", $@"{AssemblyPath}\harmony.log.txt");
 #endif
+        try
+        {
+            Prefs = XmlSerializerHelper.Deserialize<Preferences>($@"{AssemblyPath}\{SETTINGS_FILE}");
+        }
+        catch (Exception e)
+        {
+            Debug.WriteLine($"[ERROR] [{IDENTIFIER}] {e.Message}");
+            Prefs = new Preferences();
+        }
+
         CommunicationWrapper.Start();
 
         Harmony harmony = new Harmony(HARMONY_IDENTIFIER);
@@ -86,19 +100,12 @@ public static class AutoSplitterWS
 
 #if DEBUG
     #region Menu Items
-    // [PauseMenuItemSetting]
-    // [MainMenuItemSetting]
-    // public static OptionUpsideDown OptionUpsideDown(object factory, GuiFormat format)
-    // {
-    //     return new OptionUpsideDown();
-    // }
-
-    // [PauseMenuItemSetting]
-    // [MainMenuItemSetting]
-    // public static ToggleReverseGravity ToggleReverseGravity(object factory, GuiFormat format)
-    // {
-    //     return new ToggleReverseGravity();
-    // }
+    [PauseMenuItemSetting]
+    [MainMenuItemSetting]
+    public static ToggleScreenNumber ToggleScreenNumber(object factory, GuiFormat format)
+    {
+        return new ToggleScreenNumber();
+    }
     #endregion
 #endif
 }
