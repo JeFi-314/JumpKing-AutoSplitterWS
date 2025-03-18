@@ -27,6 +27,8 @@ public partial class ScreenSplitSetting : SplitSetting
     protected override void SetupControlValues()
     {
         numericUpDown_Number.Value = screenSplit.Number;
+
+        toolTip.SetToolTip(numericUpDown_Number, "Screen Number");
     }
     protected override void AddHandlers() 
     {

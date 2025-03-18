@@ -36,11 +36,12 @@ public partial class Settings : UserControl
             isRegistedFormClosed = true;
         }
 
+        flow_SplitSettings.SuspendLayout();
+
         checkBox_AutoStart.Checked = isAutoStartSplit;
         checkBox_AutoReset.Checked = isAutoResetSplit;
         checkBox_Undo.Checked = isUndoSplit;
 
-        flow_SplitSettings.SuspendLayout();
         for (int i = 0; i<Component.Run.Count; i++) {
             var segment = Component.Run[i];
             var split = (0<=i & i<SplitManager.SplitList.Count) 
@@ -51,6 +52,11 @@ public partial class Settings : UserControl
             flow_SplitSettings.Controls.Add(frame);
             SplitSettingFrames.Add(frame);
         }
+
+        toolTip.SetToolTip(checkBox_AutoStart, "Start run when game start.");
+        toolTip.SetToolTip(checkBox_AutoReset, "Reset run when game restart.");
+        toolTip.SetToolTip(checkBox_Undo, "Undo screen split if player doesn't land on next screen. (as IL rule)");
+
         flow_SplitSettings.ResumeLayout();
     }
     public static void LoadFromXml(XmlNode node)

@@ -54,6 +54,10 @@ public partial class SplitSettingFrame : UserControl
             _ => new ManualSplitSetting(new ManualSplit()),
         };
         AddSplitSetting(setting);
+
+        toolTip.SetToolTip(label_SplitName, "Split Name");
+        toolTip.SetToolTip(combo_SplitType, "Split Type");
+        toolTip.SetToolTip(pictureBox_Drag, "Drag & Drop");
         table_Main.ResumeLayout();
     }
     private void AddHandlers()

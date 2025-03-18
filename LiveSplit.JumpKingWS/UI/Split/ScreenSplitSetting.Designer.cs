@@ -28,8 +28,10 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             this.table_Main = new System.Windows.Forms.TableLayoutPanel();
             this.numericUpDown_Number = new System.Windows.Forms.NumericUpDown();
+            this.toolTip = new System.Windows.Forms.ToolTip(this.components);
             this.table_Main.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown_Number)).BeginInit();
             this.SuspendLayout();
@@ -90,5 +92,6 @@
 
         private System.Windows.Forms.TableLayoutPanel table_Main;
         private System.Windows.Forms.NumericUpDown numericUpDown_Number;
+        private System.Windows.Forms.ToolTip toolTip;
     }
 }

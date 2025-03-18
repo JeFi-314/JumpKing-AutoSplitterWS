@@ -28,10 +28,12 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             this.table_Main = new System.Windows.Forms.TableLayoutPanel();
             this.label_SplitName = new System.Windows.Forms.Label();
             this.combo_SplitType = new System.Windows.Forms.ComboBox();
             this.pictureBox_Drag = new System.Windows.Forms.PictureBox();
+            this.toolTip = new System.Windows.Forms.ToolTip(this.components);
             this.table_Main.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox_Drag)).BeginInit();
             this.SuspendLayout();
@@ -52,7 +54,7 @@
             this.table_Main.Name = "table_Main";
             this.table_Main.RowCount = 1;
             this.table_Main.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.table_Main.Size = new System.Drawing.Size(456, 22);
+            this.table_Main.Size = new System.Drawing.Size(426, 22);
             this.table_Main.TabIndex = 0;
             // 
             // label_SplitName
@@ -82,7 +84,7 @@
             // 
             this.pictureBox_Drag.Cursor = System.Windows.Forms.Cursors.SizeAll;
             this.pictureBox_Drag.Image = global::LiveSplit.JumpKingWS.Properties.Resources.Drag;
-            this.pictureBox_Drag.Location = new System.Drawing.Point(434, 0);
+            this.pictureBox_Drag.Location = new System.Drawing.Point(404, 0);
             this.pictureBox_Drag.Margin = new System.Windows.Forms.Padding(0);
             this.pictureBox_Drag.Name = "pictureBox_Drag";
             this.pictureBox_Drag.Size = new System.Drawing.Size(22, 22);
@@ -112,5 +114,6 @@
         private System.Windows.Forms.Label label_SplitName;
         private System.Windows.Forms.ComboBox combo_SplitType;
         private System.Windows.Forms.PictureBox pictureBox_Drag;
+        private System.Windows.Forms.ToolTip toolTip;
     }
 }

@@ -99,13 +99,13 @@ partial class Settings
             // 
             this.flow_SplitSettings.AllowDrop = true;
             this.flow_SplitSettings.AutoScroll = true;
-            this.flow_SplitSettings.WrapContents  = false;
             this.flow_SplitSettings.Dock = System.Windows.Forms.DockStyle.Fill;
             this.flow_SplitSettings.FlowDirection = System.Windows.Forms.FlowDirection.TopDown;
             this.flow_SplitSettings.Location = new System.Drawing.Point(3, 33);
             this.flow_SplitSettings.Name = "flow_SplitSettings";
             this.flow_SplitSettings.Size = new System.Drawing.Size(454, 434);
             this.flow_SplitSettings.TabIndex = 1;
+            this.flow_SplitSettings.WrapContents = false;
             this.flow_SplitSettings.DragEnter += new System.Windows.Forms.DragEventHandler(this.flow_SplitSettings_DragEnter);
             this.flow_SplitSettings.DragOver += new System.Windows.Forms.DragEventHandler(this.flow_SplitSettings_DragOver);
             // 

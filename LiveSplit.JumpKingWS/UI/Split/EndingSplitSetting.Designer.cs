@@ -57,7 +57,7 @@
             this.combo_Ending.Location = new System.Drawing.Point(0, 0);
             this.combo_Ending.Margin = new System.Windows.Forms.Padding(0);
             this.combo_Ending.Name = "combo_Ending";
-            this.combo_Ending.Size = new System.Drawing.Size(100, 21);
+            this.combo_Ending.Size = new System.Drawing.Size(120, 21);
             this.combo_Ending.TabIndex = 0;
             // 
             // EndingSplitSetting
