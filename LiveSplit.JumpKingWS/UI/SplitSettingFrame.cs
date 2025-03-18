@@ -14,7 +14,9 @@ using LiveSplit.JumpKingWS.UI.Split;
 namespace LiveSplit.JumpKingWS.UI;
 public partial class SplitSettingFrame : UserControl
 {
-    private SplitType previousSplitType = SplitType.Manual;
+    private bool isReadyForDrag = false;
+    private int mouseY = 0;
+    public SplitType lastSplitType {get; private set;} = SplitType.Manual;
     public SplitSetting SplitSetting {get; private set;} = null;
     public SplitSettingFrame(string splitName, SplitBase split = null)
     {
@@ -39,9 +41,9 @@ public partial class SplitSettingFrame : UserControl
             }
         };
         combo_SplitType.SelectedItem = split.SplitType;
-        previousSplitType = split.SplitType;
+        lastSplitType = split.SplitType;
 
-        SplitSetting = split.SplitType switch
+        SplitSetting setting = split.SplitType switch
         {
             SplitType.Manual => new ManualSplitSetting(split.Clone<ManualSplit>()),
             SplitType.Screen => new ScreenSplitSetting(split.Clone<ScreenSplit>()),
@@ -51,7 +53,7 @@ public partial class SplitSettingFrame : UserControl
             SplitType.Ending => new EndingSplitSetting(split.Clone<EndingSplit>()),
             _ => new ManualSplitSetting(new ManualSplit()),
         };
-        AddSplitSetting();
+        AddSplitSetting(setting);
         table_Main.ResumeLayout();
     }
     private void AddHandlers()
@@ -62,12 +64,12 @@ public partial class SplitSettingFrame : UserControl
     private void OnSplitTypeChanged(object sender, EventArgs e)
     {
         SplitType type = (SplitType)combo_SplitType.SelectedItem;
-        if (previousSplitType == type) return;
-        previousSplitType = type;
+        if (lastSplitType == type) return;
+        lastSplitType = type;
 
         table_Main.SuspendLayout();
         if (SplitSetting!=null) RemoveSplitSetting();
-        SplitSetting = type switch
+        SplitSetting setting = type switch
         {
             SplitType.Manual => new ManualSplitSetting(new ManualSplit()),
             SplitType.Screen => new ScreenSplitSetting(new ScreenSplit()),
@@ -77,20 +79,42 @@ public partial class SplitSettingFrame : UserControl
             SplitType.Ending => new EndingSplitSetting(new EndingSplit()),
             _ => new ManualSplitSetting(new ManualSplit()),
         };
-        AddSplitSetting();
+        AddSplitSetting(setting);
         table_Main.ResumeLayout();
     }
 
-    private void AddSplitSetting() 
+    public void AddSplitSetting(SplitSetting setting) 
     {
+        SplitSetting = setting;
         table_Main.Controls.Add(SplitSetting, 2, 0);
         SplitSetting.Margin = new Padding(0);
         SplitSetting.Dock = DockStyle.Fill;
     }
-    private void RemoveSplitSetting()
+    public void RemoveSplitSetting(bool dispose = true)
     {
         table_Main.Controls.Remove(SplitSetting);
-        SplitSetting.Dispose();
+        if (dispose) SplitSetting.Dispose();
         SplitSetting = null;
+    }
+    public void SetSplitType(SplitType type)
+    {
+        lastSplitType = type;
+        combo_SplitType.SelectedItem = type;
+    }
+
+    private void pictureBox_Drag_MouseMove(object sender, MouseEventArgs e)
+    {
+        if (isReadyForDrag && e.Button == MouseButtons.Left) {
+            if (Math.Abs(mouseY - e.Y) > 5) {
+                DoDragDrop(new Node<SplitSettingFrame>(this), DragDropEffects.All);
+                isReadyForDrag = false;
+            }
+        }
+    }
+
+    private void pictureBox_Drag_MouseDown(object sender, MouseEventArgs e)
+    {
+        mouseY = e.Y;
+        isReadyForDrag = true;
     }
 }
