@@ -5,7 +5,7 @@ using System.Reflection;
 
 namespace AutoSplitterWS.Patching;
 
-public class OnGiveUpAch
+internal class OnGiveUpAch
 {
     public OnGiveUpAch(Harmony harmony)
     {

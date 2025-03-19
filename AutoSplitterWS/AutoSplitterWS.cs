@@ -30,10 +30,10 @@ public static class AutoSplitterWS
     {
         AssemblyPath = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
 #if DEBUG
-        // Debugger.Launch();
-        // Debug.WriteLine("------");
-        // Harmony.DEBUG = true;
-        // Environment.SetEnvironmentVariable("HARMONY_LOG_FILE", $@"{AssemblyPath}\harmony.log.txt");
+        Debugger.Launch();
+        Debug.WriteLine("------");
+        Harmony.DEBUG = true;
+        Environment.SetEnvironmentVariable("HARMONY_LOG_FILE", $@"{AssemblyPath}\harmony.log.txt");
 #endif
         try
         {
@@ -44,6 +44,7 @@ public static class AutoSplitterWS
             Debug.WriteLine($"[ERROR] [{IDENTIFIER}] {e.Message}");
             Prefs = new Preferences();
         }
+        Prefs.PropertyChanged += SaveSettingsOnFile;
 
         CommunicationWrapper.Start();
 
@@ -61,15 +62,6 @@ public static class AutoSplitterWS
         }
         catch (Exception e) {
             Debug.WriteLine(e.ToString());
-
-            // Debug.WriteLine($"Message: {e.Message}");
-            // Debug.WriteLine($"Stack Trace: {e.StackTrace}");
-
-            // if (e.InnerException != null)
-            // {
-            //         Debug.WriteLine("Inner Exception:");
-            //         Debug.WriteLine(e.InnerException.ToString());
-            // }
         }
 
 #if DEBUG
@@ -103,5 +95,27 @@ public static class AutoSplitterWS
     {
         return new ToggleScreenNumber();
     }
+    [PauseMenuItemSetting]
+    public static ButtonReconnect ButtonConnect(object factory, GuiFormat format)
+    {
+        return new ButtonReconnect();
+    }
+    [PauseMenuItemSetting]
+    public static TextConnectionState GetTextConnectionState(object factory, GuiFormat format)
+    {
+        return TextConnectionState.Instance;
+    }
     #endregion
+
+    private static void SaveSettingsOnFile(object sender, System.ComponentModel.PropertyChangedEventArgs args)
+    {
+        try
+        {
+            XmlSerializerHelper.Serialize($@"{AssemblyPath}\{SETTINGS_FILE}", Prefs);
+        }
+        catch (Exception e)
+        {
+            Debug.WriteLine($"[ERROR] [{IDENTIFIER}] {e.Message}");
+        }
+    }
 }

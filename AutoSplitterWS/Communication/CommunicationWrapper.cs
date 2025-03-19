@@ -24,6 +24,7 @@ SOFTWARE.
 
 using System;
 using System.Diagnostics;
+using AutoSplitterWS.Menu;
 
 namespace AutoSplitterWS.Communication;
 
@@ -38,15 +39,18 @@ public static class CommunicationWrapper {
         AppDomain.CurrentDomain.ProcessExit += (sender, e) => Stop();
     }
 
-    public static void Start() {
+    public static void Start()
+    {
         if (comm != null) {
             Debug.WriteLine("[Wrapper] Tried to start the communication adapter while already running!");
             return;
         }
 
         comm = new CommunicationAdapterJumpKing();
+        TextConnectionState.SetState(true);
     }
-    public static void Stop() {
+    public static void Stop()
+    {
         if (comm == null) {
             Debug.WriteLine("[Wrapper] Tried to stop the communication adapter while not running!");
             return;
@@ -54,19 +58,20 @@ public static class CommunicationWrapper {
 
         comm.Dispose();
         comm = null;
+        TextConnectionState.SetState(false);
     }
 
-    public static void ChangeStatus() {
+    public static void TryReconnect()
+    {
         if (comm == null) {
             Start();
-        } else if (comm != null) {
-            Stop();
         }
     }
 
     #region Actions
 
-    public static void SendSeeScreen(int index) {
+    public static void SendSeeScreen(int index)
+    {
         if (!Connected) {
             return;
         }
@@ -74,7 +79,8 @@ public static class CommunicationWrapper {
         comm.WriteSeeScreen(index);
     }
 
-    public static void SendLandOnScreen(int index) {
+    public static void SendLandOnScreen(int index)
+    {
         if (!Connected) {
             return;
         }
@@ -82,7 +88,8 @@ public static class CommunicationWrapper {
         comm.WriteLandOnScreen(index);
     }
 
-    public static void SendAddItems(int item, int count) {
+    public static void SendAddItems(int item, int count)
+    {
         if (!Connected || count <= 0) {
             return;
         }
@@ -90,7 +97,8 @@ public static class CommunicationWrapper {
         comm.WriteAddItems(item, count);
     }
 
-    public static void SendAchievement(int code) {
+    public static void SendAchievement(int code)
+    {
         if (!Connected) {
             return;
         }
@@ -98,7 +106,8 @@ public static class CommunicationWrapper {
         comm.WriteAchievement(code);
     }
 
-    public static void SendRavenFlee(string ravenName, int homeIndex) {
+    public static void SendRavenFlee(string ravenName, int homeIndex)
+    {
         if (!Connected) {
             return;
         }
@@ -106,35 +115,40 @@ public static class CommunicationWrapper {
         comm.WriteRavenFlee(ravenName, homeIndex);
     }
 
-    public static void SendGameLoopStart(int ticks) {
+    public static void SendGameLoopStart(int ticks)
+    {
         if (!Connected) {
             return;
         }
 
         comm.WriteGameLoopStart(ticks);
     }
-    public static void SendWin(int ending) {
+    public static void SendWin(int ending)
+    {
         if (!Connected) {
             return;
         }
 
         comm.WriteWin(ending);
     }
-    public static void SendRestart() {
+    public static void SendRestart()
+    {
         if (!Connected) {
             return;
         }
 
         comm.WriteRestart();
     }
-    public static void SendExitToMenu() {
+    public static void SendExitToMenu()
+    {
         if (!Connected) {
             return;
         }
 
         comm.WriteExitToMenu();
     }
-    public static void SendGiveUp() {
+    public static void SendGiveUp()
+    {
         if (!Connected) {
             return;
         }
@@ -142,7 +156,8 @@ public static class CommunicationWrapper {
         comm.WriteGiveUp();
     }
 
-    public static void SendUpdateTicks(int ticks) {
+    public static void SendUpdateTicks(int ticks)
+    {
         if (!Connected) {
             return;
         }

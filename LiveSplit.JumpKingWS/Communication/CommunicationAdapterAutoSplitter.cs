@@ -24,6 +24,7 @@ SOFTWARE.
 
 using System.Diagnostics;
 using System.IO;
+using System.Threading.Tasks;
 using CommonCom;
 using CommonCom.Util;
 
@@ -31,100 +32,106 @@ namespace LiveSplit.JumpKingWS.Communication;
 
 public sealed class CommunicationAdapterAutoSplitter() : CommunicationAdapterBase(Location.AutoSplitter)
 {
-    public void ForceReconnect() {
+    public void ForceReconnect()
+    {
         if (Connected) {
-            LogVerbose("Sent message Reset");
+            LogVerbose($"Sent message | {MessageID.Reset}");
             WriteMessageNow(MessageID.Reset, _ => {});
         }
         FullReset();
     }
 
-    protected override void FullReset() {
+    protected override void FullReset()
+    {
         CommunicationWrapper.Stop();
         CommunicationWrapper.Start();
     }
 
     protected override void OnProtocolVersionMismatch(ushort otherVersion) {
-        // CommunicationWrapper.Stop();
+        LogError($"Protocal version mismatch: LiveSplit={ProtocolVersion}, JumpKing={otherVersion}.");
+        // Task.Run(() => CommunicationWrapper.Stop());
     }
 
-    protected override void OnConnectionChanged() {
+    protected override void OnConnectionChanged()
+    {
         if (Connected) {
+        } else {
         }
     }
 
-protected override void HandleMessage(MessageID messageId, BinaryReader reader) {
-    switch (messageId) {
-        case MessageID.SeeScreen:
-            int seeScreenIndex = reader.ReadObject<int>();
-            LogInfo($"Received message {MessageID.SeeScreen}: {seeScreenIndex}");
-            Component.ActionQueue.Enqueue(() => CommunicationWrapper.OnSeeScreen(seeScreenIndex));
-            break;
+    protected override void HandleMessage(MessageID messageId, BinaryReader reader)
+    {
+        switch (messageId) {
+            case MessageID.SeeScreen:
+                int seeScreenIndex = reader.ReadObject<int>();
+                LogInfo($"Received message {MessageID.SeeScreen}: {seeScreenIndex}");
+                Component.ActionQueue.Enqueue(() => CommunicationWrapper.OnSeeScreen(seeScreenIndex));
+                break;
 
-        case MessageID.LandOnScreen:
-            int landScreenIndex = reader.ReadObject<int>();
-            LogInfo($"Received message {MessageID.LandOnScreen}: {landScreenIndex}");
-            Component.ActionQueue.Enqueue(() => CommunicationWrapper.OnLandOnScreen(landScreenIndex));
-            break;
+            case MessageID.LandOnScreen:
+                int landScreenIndex = reader.ReadObject<int>();
+                LogInfo($"Received message {MessageID.LandOnScreen}: {landScreenIndex}");
+                Component.ActionQueue.Enqueue(() => CommunicationWrapper.OnLandOnScreen(landScreenIndex));
+                break;
 
-        case MessageID.AddItems:
-            Item item = (Item)reader.ReadObject<int>();
-            int count = reader.ReadObject<int>();
-            LogInfo($"Received message {MessageID.AddItems}: {item.GetName()}, {count}");
-            Component.ActionQueue.Enqueue(() => CommunicationWrapper.OnAddItems(item, count));
-            break;
+            case MessageID.AddItems:
+                Item item = (Item)reader.ReadObject<int>();
+                int count = reader.ReadObject<int>();
+                LogInfo($"Received message {MessageID.AddItems}: {item.GetName()}, {count}");
+                Component.ActionQueue.Enqueue(() => CommunicationWrapper.OnAddItems(item, count));
+                break;
 
-        case MessageID.GetAchievement:
-            Achievement code = (Achievement)reader.ReadObject<int>();
-            LogInfo($"Received message {MessageID.GetAchievement}: {code.GetName()}");
-            Component.ActionQueue.Enqueue(() => CommunicationWrapper.OnAchievement(code));
-            break;
+            case MessageID.GetAchievement:
+                Achievement code = (Achievement)reader.ReadObject<int>();
+                LogInfo($"Received message {MessageID.GetAchievement}: {code.GetName()}");
+                Component.ActionQueue.Enqueue(() => CommunicationWrapper.OnAchievement(code));
+                break;
 
-        case MessageID.RavenFlee:
-            string ravenName = reader.ReadObject<string>();
-            int homeIndex = reader.ReadObject<int>();
-            LogInfo($"Received message {MessageID.RavenFlee}: {ravenName}, {homeIndex}");
-            Component.ActionQueue.Enqueue(() => CommunicationWrapper.OnRavenFlee(ravenName, homeIndex));
-            break;
+            case MessageID.RavenFlee:
+                string ravenName = reader.ReadObject<string>();
+                int homeIndex = reader.ReadObject<int>();
+                LogInfo($"Received message {MessageID.RavenFlee}: {ravenName}, {homeIndex}");
+                Component.ActionQueue.Enqueue(() => CommunicationWrapper.OnRavenFlee(ravenName, homeIndex));
+                break;
 
-        case MessageID.UpdateTicks:
-            int ticks = reader.ReadObject<int>();
-            LogVerbose($"Received message {MessageID.UpdateTicks}: {ticks}");
-            Component.ActionQueue.Enqueue(() => CommunicationWrapper.OnUpdateTicks(ticks));
-            break;
+            case MessageID.UpdateTicks:
+                int ticks = reader.ReadObject<int>();
+                LogVerbose($"Received message {MessageID.UpdateTicks}: {ticks}");
+                Component.ActionQueue.Enqueue(() => CommunicationWrapper.OnUpdateTicks(ticks));
+                break;
 
-        case MessageID.GameLoopStart:
-            ticks = reader.ReadObject<int>();
-            LogInfo($"Received message {MessageID.GameLoopStart}: {ticks}");
-            Component.ActionQueue.Enqueue(() => CommunicationWrapper.OnGameLoopStart(ticks));
-            break;
+            case MessageID.GameLoopStart:
+                ticks = reader.ReadObject<int>();
+                LogInfo($"Received message {MessageID.GameLoopStart}: {ticks}");
+                Component.ActionQueue.Enqueue(() => CommunicationWrapper.OnGameLoopStart(ticks));
+                break;
 
-        case MessageID.Win:
-            Ending ending = (Ending)reader.ReadObject<int>();
-            LogInfo($"Received message {MessageID.Win}: {ending.GetName()}");
-            Component.ActionQueue.Enqueue(() => CommunicationWrapper.OnWin(ending));
-            break;
+            case MessageID.Win:
+                Ending ending = (Ending)reader.ReadObject<int>();
+                LogInfo($"Received message {MessageID.Win}: {ending.GetName()}");
+                Component.ActionQueue.Enqueue(() => CommunicationWrapper.OnWin(ending));
+                break;
 
-        case MessageID.Restart:
-            LogInfo($"Received message {MessageID.Restart}");
-            Component.ActionQueue.Enqueue(() => CommunicationWrapper.OnRestart());
-            break;
+            case MessageID.Restart:
+                LogInfo($"Received message {MessageID.Restart}");
+                Component.ActionQueue.Enqueue(() => CommunicationWrapper.OnRestart());
+                break;
 
-        case MessageID.ExitToMenu:
-            LogInfo($"Received message {MessageID.ExitToMenu}");
-            Component.ActionQueue.Enqueue(() => CommunicationWrapper.OnExitToMenu());
-            break;
+            case MessageID.ExitToMenu:
+                LogInfo($"Received message {MessageID.ExitToMenu}");
+                Component.ActionQueue.Enqueue(() => CommunicationWrapper.OnExitToMenu());
+                break;
 
-        case MessageID.GiveUp:
-            LogInfo($"Received message {MessageID.GiveUp}");
-            Component.ActionQueue.Enqueue(() => CommunicationWrapper.OnGiveUp());
-            break;
+            case MessageID.GiveUp:
+                LogInfo($"Received message {MessageID.GiveUp}");
+                Component.ActionQueue.Enqueue(() => CommunicationWrapper.OnGiveUp());
+                break;
 
-        default:
-            LogError($"Received unknown message ID: {messageId}");
-            break;
+            default:
+                LogError($"Received unknown message ID: {messageId}");
+                break;
+        }
     }
-}
 
 
 #if DEBUG
