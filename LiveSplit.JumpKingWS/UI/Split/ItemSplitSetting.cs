@@ -42,6 +42,9 @@ public partial class ItemSplitSetting : SplitSetting
         comboBox_Item.SelectedItem = itemSplit.Item;
 
         numericUpDown_Count.Value = itemSplit.Count;
+
+        toolTip.SetToolTip(comboBox_Item, "Item Name");
+        toolTip.SetToolTip(numericUpDown_Count, "Count");
     }
     protected override void AddHandlers() 
     {

@@ -28,8 +28,10 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             this.table_Main = new System.Windows.Forms.TableLayoutPanel();
             this.comboBox_Achievement = new System.Windows.Forms.ComboBox();
+            this.toolTip = new System.Windows.Forms.ToolTip(this.components);
             this.table_Main.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -78,5 +80,6 @@
 
         private System.Windows.Forms.TableLayoutPanel table_Main;
         private System.Windows.Forms.ComboBox comboBox_Achievement;
+        private System.Windows.Forms.ToolTip toolTip;
     }
 }

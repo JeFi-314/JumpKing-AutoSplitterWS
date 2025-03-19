@@ -28,6 +28,9 @@ public partial class RavenSplitSetting : SplitSetting
         combo_RavenName.Text = ravenSplit.RavenName;
 
         numericUpDown_HomeIndex.Value = ravenSplit.HomeIndex1;
+
+        toolTip.SetToolTip(combo_RavenName, "Raven Name \n(drop-down options are original game raven name)");
+        toolTip.SetToolTip(numericUpDown_HomeIndex, "Home Number (one-index)");
     }
     protected override void AddHandlers() 
     {

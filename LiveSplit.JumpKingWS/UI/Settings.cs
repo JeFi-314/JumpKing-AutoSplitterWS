@@ -5,11 +5,13 @@ using System.Data;
 using System.Diagnostics;
 using System.Drawing;
 using System.Linq;
+using System.Reflection.Emit;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Xml;
 using LiveSplit.JumpKingWS.Split;
+using LiveSplit.JumpKingWS.UI.Split;
 
 namespace LiveSplit.JumpKingWS.UI;
 public partial class Settings : UserControl
@@ -34,11 +36,12 @@ public partial class Settings : UserControl
             isRegistedFormClosed = true;
         }
 
+        flow_SplitSettings.SuspendLayout();
+
         checkBox_AutoStart.Checked = isAutoStartSplit;
         checkBox_AutoReset.Checked = isAutoResetSplit;
         checkBox_Undo.Checked = isUndoSplit;
 
-        flow_SplitSettings.SuspendLayout();
         for (int i = 0; i<Component.Run.Count; i++) {
             var segment = Component.Run[i];
             var split = (0<=i & i<SplitManager.SplitList.Count) 
@@ -49,6 +52,11 @@ public partial class Settings : UserControl
             flow_SplitSettings.Controls.Add(frame);
             SplitSettingFrames.Add(frame);
         }
+
+        toolTip.SetToolTip(checkBox_AutoStart, "Start run when game start.");
+        toolTip.SetToolTip(checkBox_AutoReset, "Reset run when game restart.");
+        toolTip.SetToolTip(checkBox_Undo, "Undo screen split if player doesn't land on next screen. (as IL rule)");
+
         flow_SplitSettings.ResumeLayout();
     }
     public static void LoadFromXml(XmlNode node)
@@ -83,16 +91,49 @@ public partial class Settings : UserControl
             SplitManager.AddSplits(SplitSettingFrames.Select(frame => frame.SplitSetting.Split));
         }
         
+        flow_SplitSettings.SuspendLayout();
         foreach (var frame in SplitSettingFrames) {
             frame.Dispose();
         }
         SplitSettingFrames.Clear();
         flow_SplitSettings.Controls.Clear();
+        flow_SplitSettings.ResumeLayout();
         Debug.WriteLine($"[UI] Clear all split settings");
 
         if (isRegistedFormClosed) {
             form.FormClosed -= OnMainFormClosed;
             isRegistedFormClosed = false;
+        }
+    }
+
+    private void flow_SplitSettings_DragEnter(object sender, DragEventArgs e)
+    {
+        e.Effect = DragDropEffects.Move;
+    }
+
+    private void flow_SplitSettings_DragOver(object sender, DragEventArgs e)
+    {
+        var flow = (FlowLayoutPanel) sender;
+        Point p = flow.PointToClient(new Point(e.X, e.Y));
+        if (e.Data.GetData(typeof(Node<SplitSettingFrame>)) is Node<SplitSettingFrame> node
+            && flow.GetChildAtPoint(p) is SplitSettingFrame dropping) {
+            e.Effect = DragDropEffects.Move;
+            var dragging = node.Value;
+            if (dragging != dropping) {
+                node.Value = dropping;
+                dragging.SuspendLayout();
+                dropping.SuspendLayout();
+                var setting = dragging.SplitSetting;
+                dragging.RemoveSplitSetting(false);
+                dragging.AddSplitSetting(dropping.SplitSetting);
+                dropping.RemoveSplitSetting(false);
+                dropping.AddSplitSetting(setting);
+                var type = dragging.lastSplitType;
+                dragging.SetSplitType(dropping.lastSplitType);
+                dropping.SetSplitType(type);
+                dragging.ResumeLayout();
+                dropping.ResumeLayout();
+            }
         }
     }
 

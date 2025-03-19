@@ -36,6 +36,7 @@ public partial class AchievementSplitSetting : SplitSetting
             }
         };
         comboBox_Achievement.SelectedItem = achievementSplit.Code;
+        toolTip.SetToolTip(comboBox_Achievement, achievementSplit.Code.GetDescription());
     }
     protected override void AddHandlers() 
     {
@@ -48,5 +49,6 @@ public partial class AchievementSplitSetting : SplitSetting
     private void OnCodeChanged(object sender, EventArgs e)
     {
         achievementSplit.Code = (Achievement)comboBox_Achievement.SelectedItem;
+        toolTip.SetToolTip(comboBox_Achievement, achievementSplit.Code.GetDescription());
     }
 }

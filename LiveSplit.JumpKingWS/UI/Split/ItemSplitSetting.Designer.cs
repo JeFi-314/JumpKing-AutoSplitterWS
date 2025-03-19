@@ -28,9 +28,11 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             this.table_Main = new System.Windows.Forms.TableLayoutPanel();
             this.comboBox_Item = new System.Windows.Forms.ComboBox();
             this.numericUpDown_Count = new System.Windows.Forms.NumericUpDown();
+            this.toolTip = new System.Windows.Forms.ToolTip(this.components);
             this.table_Main.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown_Count)).BeginInit();
             this.SuspendLayout();
@@ -64,14 +66,14 @@
             this.comboBox_Item.Location = new System.Drawing.Point(0, 0);
             this.comboBox_Item.Margin = new System.Windows.Forms.Padding(0);
             this.comboBox_Item.Name = "comboBox_Item";
-            this.comboBox_Item.Size = new System.Drawing.Size(100, 21);
+            this.comboBox_Item.Size = new System.Drawing.Size(110, 21);
             this.comboBox_Item.TabIndex = 0;
             // 
             // numericUpDown_Count
             // 
             this.numericUpDown_Count.Dock = System.Windows.Forms.DockStyle.Fill;
             this.numericUpDown_Count.Font = new System.Drawing.Font("PMingLiU", 9F);
-            this.numericUpDown_Count.Location = new System.Drawing.Point(100, 0);
+            this.numericUpDown_Count.Location = new System.Drawing.Point(110, 0);
             this.numericUpDown_Count.Margin = new System.Windows.Forms.Padding(0);
             this.numericUpDown_Count.Maximum = new decimal(new int[] {
             64,
@@ -109,5 +111,6 @@
         private System.Windows.Forms.TableLayoutPanel table_Main;
         private System.Windows.Forms.ComboBox comboBox_Item;
         private System.Windows.Forms.NumericUpDown numericUpDown_Count;
+        private System.Windows.Forms.ToolTip toolTip;
     }
 }

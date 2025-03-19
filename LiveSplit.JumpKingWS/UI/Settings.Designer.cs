@@ -59,7 +59,7 @@ partial class Settings
             this.flow_Upper.Dock = System.Windows.Forms.DockStyle.Top;
             this.flow_Upper.Location = new System.Drawing.Point(3, 3);
             this.flow_Upper.Name = "flow_Upper";
-            this.flow_Upper.Size = new System.Drawing.Size(474, 30);
+            this.flow_Upper.Size = new System.Drawing.Size(454, 30);
             this.flow_Upper.TabIndex = 0;
             // 
             // checkBox_AutoStart
@@ -97,12 +97,17 @@ partial class Settings
             // 
             // flow_SplitSettings
             // 
+            this.flow_SplitSettings.AllowDrop = true;
+            this.flow_SplitSettings.AutoScroll = true;
             this.flow_SplitSettings.Dock = System.Windows.Forms.DockStyle.Fill;
             this.flow_SplitSettings.FlowDirection = System.Windows.Forms.FlowDirection.TopDown;
             this.flow_SplitSettings.Location = new System.Drawing.Point(3, 33);
             this.flow_SplitSettings.Name = "flow_SplitSettings";
-            this.flow_SplitSettings.Size = new System.Drawing.Size(474, 434);
+            this.flow_SplitSettings.Size = new System.Drawing.Size(454, 434);
             this.flow_SplitSettings.TabIndex = 1;
+            this.flow_SplitSettings.WrapContents = false;
+            this.flow_SplitSettings.DragEnter += new System.Windows.Forms.DragEventHandler(this.flow_SplitSettings_DragEnter);
+            this.flow_SplitSettings.DragOver += new System.Windows.Forms.DragEventHandler(this.flow_SplitSettings_DragOver);
             // 
             // toolTip
             // 
@@ -116,11 +121,11 @@ partial class Settings
             this.Controls.Add(this.flow_SplitSettings);
             this.Controls.Add(this.flow_Upper);
             this.Margin = new System.Windows.Forms.Padding(2);
-            this.MaximumSize = new System.Drawing.Size(450, 470);
-            this.MinimumSize = new System.Drawing.Size(480, 400);
+            this.MaximumSize = new System.Drawing.Size(480, 470);
+            this.MinimumSize = new System.Drawing.Size(450, 400);
             this.Name = "Settings";
             this.Padding = new System.Windows.Forms.Padding(3);
-            this.Size = new System.Drawing.Size(480, 470);
+            this.Size = new System.Drawing.Size(460, 470);
             this.Load += new System.EventHandler(this.Settings_Load);
             this.flow_Upper.ResumeLayout(false);
             this.flow_Upper.PerformLayout();
