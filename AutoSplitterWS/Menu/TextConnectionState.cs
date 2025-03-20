@@ -2,19 +2,32 @@
 using System.Reflection.Emit;
 using System.Windows.Markup;
 using HarmonyLib;
+using JumpKing;
 using JumpKing.PauseMenu.BT;
 using JumpKing.PauseMenu.BT.Actions;
 using JumpKing.Workshop.Nodes;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 
 namespace AutoSplitterWS.Menu;
 public class TextConnectionState : JumpKing.PauseMenu.BT.TextInfo
 {
-    public static TextConnectionState Instance {get; private set;}
+    private static TextConnectionState instance; 
+    public static TextConnectionState Instance
+    {
+        // need to update SpriteFont bc content manager will
+        // reload assets (including font) everytime you change the map
+        get
+        {
+            var font = Traverse.Create(instance).Field<SpriteFont>("m_font");
+            font.Value = Game1.instance.contentManager.font.MenuFont;
+            return instance;
+        }
+    }
 
     static TextConnectionState()
     {
-        Instance = new TextConnectionState();
+        instance = new TextConnectionState();
     }
 
     private TextConnectionState() : base("Connecting", Color.White) {}
