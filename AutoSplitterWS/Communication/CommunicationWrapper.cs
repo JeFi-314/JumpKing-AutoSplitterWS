@@ -47,7 +47,7 @@ public static class CommunicationWrapper {
         }
 
         comm = new CommunicationAdapterJumpKing();
-        TextConnectionState.SetState(true);
+        TextConnectionState.SetState(ConnectionState.Connecting);
     }
     public static void Stop()
     {
@@ -58,7 +58,12 @@ public static class CommunicationWrapper {
 
         comm.Dispose();
         comm = null;
-        TextConnectionState.SetState(false);
+        TextConnectionState.SetState(ConnectionState.Disconnected);
+    }
+
+    public static void OnConnectionChanged(bool connected)
+    {
+        TextConnectionState.SetState(connected ? ConnectionState.Connected : ConnectionState.Connecting);
     }
 
     public static void TryReconnect()

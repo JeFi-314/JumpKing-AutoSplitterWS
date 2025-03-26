@@ -42,9 +42,7 @@ public sealed class CommunicationAdapterJumpKing() : CommunicationAdapterBase(Lo
     }
 
     protected override void OnConnectionChanged() {
-        if (Connected) {
-            // CommunicationWrapper.Send();
-        }
+        CommunicationWrapper.OnConnectionChanged(Connected);
     }
 
     protected override void HandleMessage(MessageID messageId, BinaryReader reader) {

@@ -1,5 +1,4 @@
-﻿using System.Windows.Markup;
-using JumpKing.PauseMenu.BT.Actions;
+﻿using JumpKing.PauseMenu.BT.Actions;
 
 namespace AutoSplitterWS.Menu;
 public class ToggleScreenNumber : ITextToggle
@@ -8,7 +7,7 @@ public class ToggleScreenNumber : ITextToggle
     {
     }
 
-    protected override string GetName() => "Show Current Screen#";
+    protected override string GetName() => "Show Screen-#";
 
     protected override void OnToggle()
     {

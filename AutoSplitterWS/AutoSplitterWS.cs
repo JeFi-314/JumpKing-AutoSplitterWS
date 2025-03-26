@@ -89,17 +89,19 @@ public static class AutoSplitterWS
     }
 
     #region Menu Items
-    [PauseMenuItemSetting]
     [MainMenuItemSetting]
+    [PauseMenuItemSetting]
     public static ToggleScreenNumber ToggleScreenNumber(object factory, GuiFormat format)
     {
         return new ToggleScreenNumber();
     }
+    [MainMenuItemSetting]
     [PauseMenuItemSetting]
     public static ButtonReconnect ButtonConnect(object factory, GuiFormat format)
     {
         return new ButtonReconnect();
     }
+    [MainMenuItemSetting]
     [PauseMenuItemSetting]
     public static TextConnectionState GetTextConnectionState(object factory, GuiFormat format)
     {
