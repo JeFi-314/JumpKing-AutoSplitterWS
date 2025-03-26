@@ -117,6 +117,8 @@ partial class Settings
             this.button_Reconnect.Text = "Reconnect";
             this.button_Reconnect.UseVisualStyleBackColor = true;
             this.button_Reconnect.Click += new System.EventHandler(this.button_Connect_Click);
+            this.button_Reconnect.Enabled = false;
+            this.button_Reconnect.Visible= false;
             // 
             // flow_SplitSettings
             // 
