@@ -40,8 +40,8 @@ public static class CommunicationWrapper {
         AppDomain.CurrentDomain.ProcessExit += (sender, e) => Stop();
     }
 
-
-    public static void Start() {
+    public static void Start()
+    {
         if (comm != null) {
             Console.Error.WriteLine("Tried to start the communication adapter while already running!");
             return;
@@ -49,7 +49,8 @@ public static class CommunicationWrapper {
 
         comm = new CommunicationAdapterAutoSplitter();
     }
-    public static void Stop() {
+    public static void Stop()
+    {
         if (comm == null) {
             Console.Error.WriteLine("Tried to stop the communication adapter while not running!");
             return;
@@ -59,65 +60,82 @@ public static class CommunicationWrapper {
         comm = null;
     }
 
-    private static void OnConnectionChanged() {
+    public static void OnConnectionChanged(bool connected)
+    {
     }
 
-    #region Data
+    public static void ForceReconnect()
+    {
+        comm?.ForceReconnect();
+    }
+
+    #region Actions
 
 
     #endregion
 
-    #region Actions
+    #region Reactions
 
-    public static void OnSeeScreen(int index) {
+    public static void OnSeeScreen(int index)
+    {
         ScreenState.AddSeenScreen(index);
     }
 
-    public static void OnLandOnScreen(int index) {
+    public static void OnLandOnScreen(int index)
+    {
         ScreenState.AddLandedScreen(index);
     }
 
-    public static void OnAddItems(Item item, int count) {
+    public static void OnAddItems(Item item, int count)
+    {
         ItemState.AddItems(item, count);
     }
 
-    public static void OnAchievement(Achievement code) {
+    public static void OnAchievement(Achievement code)
+    {
         AchievementState.SetAchievement(code);
     }
 
-    public static void OnRavenFlee(string ravenName, int homeIndex) {
+    public static void OnRavenFlee(string ravenName, int homeIndex)
+    {
         RavenState.AddRavenFlee(ravenName, homeIndex);
     }
 
-    public static void OnUpdateTicks(int ticks) {
+    public static void OnUpdateTicks(int ticks)
+    {
         Component.UpdateGameTime(ticks);
         SplitManager.UpdatSplits();
     }
 
-    public static void OnGameLoopStart(int ticks) {
+    public static void OnGameLoopStart(int ticks)
+    {
         if (Settings.isAutoStartSplit) Component.Timer?.Start();
         Component.UpdateGameTime(ticks);
         EndingState.Reset();
     }
 
-    public static void OnWin(Ending ending) {
+    public static void OnWin(Ending ending)
+    {
         ScreenState.Reset();
         RavenState.Reset();
         EndingState.SetEnding(ending);
     }
 
-    public static void OnRestart() {
+    public static void OnRestart()
+    {
         if (Settings.isAutoResetSplit) Component.Timer?.Reset();
         ScreenState.Reset();
         RavenState.Reset();
     }
 
-    public static void OnExitToMenu() {
+    public static void OnExitToMenu()
+    {
         ScreenState.Reset();
         RavenState.Reset();
     }
 
-    public static void OnGiveUp() {
+    public static void OnGiveUp()
+    {
         
     }
 

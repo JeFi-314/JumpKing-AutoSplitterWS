@@ -42,33 +42,43 @@ partial class Settings
     private void InitializeComponent()
     {
             this.components = new System.ComponentModel.Container();
-            this.flow_Upper = new System.Windows.Forms.FlowLayoutPanel();
+            this.table_Upper = new System.Windows.Forms.TableLayoutPanel();
             this.checkBox_AutoStart = new System.Windows.Forms.CheckBox();
             this.checkBox_AutoReset = new System.Windows.Forms.CheckBox();
             this.checkBox_Undo = new System.Windows.Forms.CheckBox();
+            this.button_Reconnect = new System.Windows.Forms.Button();
             this.flow_SplitSettings = new System.Windows.Forms.FlowLayoutPanel();
             this.toolTip = new System.Windows.Forms.ToolTip(this.components);
-            this.flow_Upper.SuspendLayout();
+            this.table_Upper.SuspendLayout();
             this.SuspendLayout();
             // 
-            // flow_Upper
+            // table_Upper
             // 
-            this.flow_Upper.Controls.Add(this.checkBox_AutoStart);
-            this.flow_Upper.Controls.Add(this.checkBox_AutoReset);
-            this.flow_Upper.Controls.Add(this.checkBox_Undo);
-            this.flow_Upper.Dock = System.Windows.Forms.DockStyle.Top;
-            this.flow_Upper.Location = new System.Drawing.Point(3, 3);
-            this.flow_Upper.Name = "flow_Upper";
-            this.flow_Upper.Size = new System.Drawing.Size(454, 30);
-            this.flow_Upper.TabIndex = 0;
+            this.table_Upper.ColumnCount = 5;
+            this.table_Upper.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
+            this.table_Upper.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
+            this.table_Upper.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
+            this.table_Upper.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.table_Upper.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 80F));
+            this.table_Upper.Controls.Add(this.checkBox_AutoStart);
+            this.table_Upper.Controls.Add(this.checkBox_AutoReset);
+            this.table_Upper.Controls.Add(this.checkBox_Undo);
+            this.table_Upper.Controls.Add(this.button_Reconnect, 4, 0);
+            this.table_Upper.Dock = System.Windows.Forms.DockStyle.Top;
+            this.table_Upper.Location = new System.Drawing.Point(3, 3);
+            this.table_Upper.Name = "table_Upper";
+            this.table_Upper.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 30F));
+            this.table_Upper.Size = new System.Drawing.Size(474, 30);
+            this.table_Upper.TabIndex = 0;
             // 
             // checkBox_AutoStart
             // 
             this.checkBox_AutoStart.AutoSize = true;
-            this.checkBox_AutoStart.Font = new System.Drawing.Font("PMingLiU", 10F);
+            this.checkBox_AutoStart.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.checkBox_AutoStart.Font = new System.Drawing.Font("PMingLiU", 9F);
             this.checkBox_AutoStart.Location = new System.Drawing.Point(3, 3);
             this.checkBox_AutoStart.Name = "checkBox_AutoStart";
-            this.checkBox_AutoStart.Size = new System.Drawing.Size(112, 18);
+            this.checkBox_AutoStart.Size = new System.Drawing.Size(95, 24);
             this.checkBox_AutoStart.TabIndex = 0;
             this.checkBox_AutoStart.Text = "Auto Start Split";
             this.checkBox_AutoStart.UseVisualStyleBackColor = true;
@@ -76,10 +86,11 @@ partial class Settings
             // checkBox_AutoReset
             // 
             this.checkBox_AutoReset.AutoSize = true;
-            this.checkBox_AutoReset.Font = new System.Drawing.Font("PMingLiU", 10F);
-            this.checkBox_AutoReset.Location = new System.Drawing.Point(121, 3);
+            this.checkBox_AutoReset.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.checkBox_AutoReset.Font = new System.Drawing.Font("PMingLiU", 9F);
+            this.checkBox_AutoReset.Location = new System.Drawing.Point(104, 3);
             this.checkBox_AutoReset.Name = "checkBox_AutoReset";
-            this.checkBox_AutoReset.Size = new System.Drawing.Size(117, 18);
+            this.checkBox_AutoReset.Size = new System.Drawing.Size(99, 24);
             this.checkBox_AutoReset.TabIndex = 1;
             this.checkBox_AutoReset.Text = "Auto Reset Split";
             this.checkBox_AutoReset.UseVisualStyleBackColor = true;
@@ -87,13 +98,27 @@ partial class Settings
             // checkBox_Undo
             // 
             this.checkBox_Undo.AutoSize = true;
-            this.checkBox_Undo.Font = new System.Drawing.Font("PMingLiU", 10F);
-            this.checkBox_Undo.Location = new System.Drawing.Point(244, 3);
+            this.checkBox_Undo.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.checkBox_Undo.Font = new System.Drawing.Font("PMingLiU", 9F);
+            this.checkBox_Undo.Location = new System.Drawing.Point(209, 3);
             this.checkBox_Undo.Name = "checkBox_Undo";
-            this.checkBox_Undo.Size = new System.Drawing.Size(86, 18);
+            this.checkBox_Undo.Size = new System.Drawing.Size(74, 24);
             this.checkBox_Undo.TabIndex = 2;
             this.checkBox_Undo.Text = "Undo Split";
             this.checkBox_Undo.UseVisualStyleBackColor = true;
+            // 
+            // button_Connect
+            // 
+            this.button_Reconnect.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.button_Reconnect.Location = new System.Drawing.Point(397, 3);
+            this.button_Reconnect.Name = "button_Reconnect";
+            this.button_Reconnect.Size = new System.Drawing.Size(74, 24);
+            this.button_Reconnect.TabIndex = 3;
+            this.button_Reconnect.Text = "Reconnect";
+            this.button_Reconnect.UseVisualStyleBackColor = true;
+            this.button_Reconnect.Click += new System.EventHandler(this.button_Connect_Click);
+            this.button_Reconnect.Enabled = false;
+            this.button_Reconnect.Visible= false;
             // 
             // flow_SplitSettings
             // 
@@ -103,7 +128,7 @@ partial class Settings
             this.flow_SplitSettings.FlowDirection = System.Windows.Forms.FlowDirection.TopDown;
             this.flow_SplitSettings.Location = new System.Drawing.Point(3, 33);
             this.flow_SplitSettings.Name = "flow_SplitSettings";
-            this.flow_SplitSettings.Size = new System.Drawing.Size(454, 434);
+            this.flow_SplitSettings.Size = new System.Drawing.Size(474, 434);
             this.flow_SplitSettings.TabIndex = 1;
             this.flow_SplitSettings.WrapContents = false;
             this.flow_SplitSettings.DragEnter += new System.Windows.Forms.DragEventHandler(this.flow_SplitSettings_DragEnter);
@@ -119,26 +144,27 @@ partial class Settings
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.AutoSize = true;
             this.Controls.Add(this.flow_SplitSettings);
-            this.Controls.Add(this.flow_Upper);
+            this.Controls.Add(this.table_Upper);
             this.Margin = new System.Windows.Forms.Padding(2);
             this.MaximumSize = new System.Drawing.Size(480, 470);
             this.MinimumSize = new System.Drawing.Size(450, 400);
             this.Name = "Settings";
             this.Padding = new System.Windows.Forms.Padding(3);
-            this.Size = new System.Drawing.Size(460, 470);
+            this.Size = new System.Drawing.Size(480, 470);
             this.Load += new System.EventHandler(this.Settings_Load);
-            this.flow_Upper.ResumeLayout(false);
-            this.flow_Upper.PerformLayout();
+            this.table_Upper.ResumeLayout(false);
+            this.table_Upper.PerformLayout();
             this.ResumeLayout(false);
 
     }
 
     #endregion
 
-    private System.Windows.Forms.FlowLayoutPanel flow_Upper;
+    private System.Windows.Forms.TableLayoutPanel table_Upper;
     private System.Windows.Forms.FlowLayoutPanel flow_SplitSettings;
     private System.Windows.Forms.ToolTip toolTip;
     private System.Windows.Forms.CheckBox checkBox_AutoStart;
     private System.Windows.Forms.CheckBox checkBox_AutoReset;
     private System.Windows.Forms.CheckBox checkBox_Undo;
+    private System.Windows.Forms.Button button_Reconnect;
 }

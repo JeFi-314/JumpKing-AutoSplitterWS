@@ -24,6 +24,7 @@ SOFTWARE.
 
 using System.Diagnostics;
 using System.IO;
+using System.Threading.Tasks;
 using CommonCom;
 using CommonCom.Util;
 
@@ -35,17 +36,17 @@ public sealed class CommunicationAdapterJumpKing() : CommunicationAdapterBase(Lo
         CommunicationWrapper.Start();
     }
 
+    protected override void OnProtocolVersionMismatch(ushort otherVersion) {
+        LogError($"Protocal version mismatch: JumpKing={ProtocolVersion}, LiveSplit={otherVersion}. Stop communication now!");
+        Task.Run(() => CommunicationWrapper.Stop());
+    }
+
     protected override void OnConnectionChanged() {
-        if (Connected) {
-            // CommunicationWrapper.Send();
-        }
+        CommunicationWrapper.OnConnectionChanged(Connected);
     }
 
     protected override void HandleMessage(MessageID messageId, BinaryReader reader) {
         switch (messageId) {
-            case MessageID.GetAchievement:
-                break;
-
             default:
                 LogError($"Received unknown message ID: {messageId}");
                 break;
@@ -56,60 +57,61 @@ public sealed class CommunicationAdapterJumpKing() : CommunicationAdapterBase(Lo
 
     public void WriteSeeScreen(int index) {
         QueueMessage(MessageID.SeeScreen, writer => writer.WriteObject(index));
-        LogVerbose($"Sent message | {MessageID.SeeScreen}-{index}");
+        LogInfo($"Sent message | {MessageID.SeeScreen}-{index}");
     }
     public void WriteLandOnScreen(int index) {
         QueueMessage(MessageID.LandOnScreen, writer => writer.WriteObject(index));
-        LogVerbose($"Sent message | {MessageID.LandOnScreen}-{index}");
+        LogInfo($"Sent message | {MessageID.LandOnScreen}-{index}");
     }
     public void WriteAddItems(int item, int count) {
         QueueMessage(MessageID.AddItems, writer => {
             writer.WriteObject(item);
             writer.WriteObject(count);
         });
-        LogVerbose($"Sent message | {MessageID.AddItems}-{((Item)item).GetName()}, {count}");
+        LogInfo($"Sent message | {MessageID.AddItems}-{((Item)item).GetName()}, {count}");
     }
     public void WriteAchievement(int code) {
         QueueMessage(MessageID.GetAchievement, writer => writer.WriteObject(code));
-        LogVerbose($"Sent message | {MessageID.GetAchievement}-{((Achievement)code).GetName()}");
+        LogInfo($"Sent message | {MessageID.GetAchievement}-{((Achievement)code).GetName()}");
     }
     public void WriteRavenFlee(string ravenName, int homeIndex) {
         QueueMessage(MessageID.RavenFlee, writer => {
             writer.WriteObject(ravenName);
             writer.WriteObject(homeIndex);
         });
-        LogVerbose($"Sent message | {MessageID.RavenFlee}-{ravenName}, {homeIndex}");
+        LogInfo($"Sent message | {MessageID.RavenFlee}-{ravenName}, {homeIndex}");
     }
     public void WriteUpdateTicks(int ticks) {
         QueueMessage(MessageID.UpdateTicks, writer => writer.WriteObject(ticks));
-        // LogVerbose($"Sent message | {MessageID.UpdateTicks}-{ticks}");
+        LogVerbose($"Sent message | {MessageID.UpdateTicks}-{ticks}");
     }
     public void WriteGameLoopStart(int ticks) {
         QueueMessage(MessageID.GameLoopStart, writer => {writer.WriteObject(ticks);});
-        LogVerbose($"Sent message | {MessageID.GameLoopStart}-{ticks}");
+        LogInfo($"Sent message | {MessageID.GameLoopStart}-{ticks}");
     }
     public void WriteWin(int ending) {
         QueueMessage(MessageID.Win, writer => writer.WriteObject(ending));
-        LogVerbose($"Sent message | {MessageID.Win}-{((Ending)ending).GetName()}");
+        LogInfo($"Sent message | {MessageID.Win}-{((Ending)ending).GetName()}");
     }
     public void WriteRestart() {
         QueueMessage(MessageID.Restart, writer => {});
-        LogVerbose($"Sent message | {MessageID.Restart}");
+        LogInfo($"Sent message | {MessageID.Restart}");
     }
     public void WriteExitToMenu() {
         QueueMessage(MessageID.ExitToMenu, writer => {});
-        LogVerbose($"Sent message | {MessageID.ExitToMenu}");
+        LogInfo($"Sent message | {MessageID.ExitToMenu}");
     }
     public void WriteGiveUp() {
         QueueMessage(MessageID.GiveUp, writer => {});
-        LogVerbose($"Sent message | {MessageID.GiveUp}");
+        LogInfo($"Sent message | {MessageID.GiveUp}");
     }
     
     #endregion
 
 #if DEBUG
     protected override void LogInfo(string message) => Debug.WriteLine($"[Com Info] {message}");
-    protected override void LogVerbose(string message) => Debug.WriteLine($"[Com Verbose] {message}");
+    // protected override void LogVerbose(string message) => Debug.WriteLine($"[Com Verbose] {message}");
+    protected override void LogVerbose(string message) {}
     protected override void LogError(string message) => Debug.WriteLine($"[Com Error] {message}");
 #else
     protected override void LogInfo(string message) {}

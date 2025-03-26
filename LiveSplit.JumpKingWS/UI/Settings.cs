@@ -1,17 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
 using System.Diagnostics;
 using System.Drawing;
 using System.Linq;
-using System.Reflection.Emit;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Xml;
 using LiveSplit.JumpKingWS.Split;
-using LiveSplit.JumpKingWS.UI.Split;
+using LiveSplit.JumpKingWS.Communication;
 
 namespace LiveSplit.JumpKingWS.UI;
 public partial class Settings : UserControl
@@ -19,46 +14,7 @@ public partial class Settings : UserControl
     public static bool isAutoStartSplit = false;
     public static bool isAutoResetSplit = false;
     public static bool isUndoSplit = false;
-
-    private bool isRegistedFormClosed = false;
-    private readonly List<SplitSettingFrame> SplitSettingFrames = [];
-
-    public Settings()
-    {
-        InitializeComponent();
-    }
-
-    private void Settings_Load(object sender, EventArgs e)
-    {
-        Form form = FindForm();
-        if (!isRegistedFormClosed) {
-            form.FormClosed += OnMainFormClosed;
-            isRegistedFormClosed = true;
-        }
-
-        flow_SplitSettings.SuspendLayout();
-
-        checkBox_AutoStart.Checked = isAutoStartSplit;
-        checkBox_AutoReset.Checked = isAutoResetSplit;
-        checkBox_Undo.Checked = isUndoSplit;
-
-        for (int i = 0; i<Component.Run.Count; i++) {
-            var segment = Component.Run[i];
-            var split = (0<=i & i<SplitManager.SplitList.Count) 
-                ? SplitManager.SplitList[i]
-                : null;
-            Debug.WriteLine($"[UI] Add split setting: {segment.Name} | {split?.FullName}");
-            var frame =  new SplitSettingFrame(segment.Name, split);
-            flow_SplitSettings.Controls.Add(frame);
-            SplitSettingFrames.Add(frame);
-        }
-
-        toolTip.SetToolTip(checkBox_AutoStart, "Start run when game start.");
-        toolTip.SetToolTip(checkBox_AutoReset, "Reset run when game restart.");
-        toolTip.SetToolTip(checkBox_Undo, "Undo screen split if player doesn't land on next screen. (as IL rule)");
-
-        flow_SplitSettings.ResumeLayout();
-    }
+    
     public static void LoadFromXml(XmlNode node)
     {
         bool.TryParse(node[nameof(isAutoStartSplit)]?.InnerText, out isAutoStartSplit);
@@ -77,6 +33,54 @@ public partial class Settings : UserControl
 		element.InnerText = value.ToString();
 		return element; 
 	}
+
+    private bool isRegistedFormClosed = false;
+    private readonly List<SplitSettingFrame> SplitSettingFrames = [];
+
+    public Settings()
+    {
+        InitializeComponent();
+    }
+
+    private void Settings_Load(object sender, EventArgs e)
+    {
+        Form form = FindForm();
+        if (!isRegistedFormClosed) {
+            form.FormClosed += OnMainFormClosed;
+            isRegistedFormClosed = true;
+        }
+
+        this.SuspendLayout();
+
+        this.Dock = DockStyle.Fill;
+
+        checkBox_AutoStart.Checked = isAutoStartSplit;
+        checkBox_AutoReset.Checked = isAutoResetSplit;
+        checkBox_Undo.Checked = isUndoSplit;
+
+        toolTip.SetToolTip(checkBox_AutoStart, "Start run when game start.");
+        toolTip.SetToolTip(checkBox_AutoReset, "Reset run when game restart.");
+        toolTip.SetToolTip(checkBox_Undo, "Undo screen split if player doesn't land on next screen. (as IL rule)");
+        toolTip.SetToolTip(button_Reconnect, "Try reconnect on both side.");
+        
+        for (int i = 0; i<Component.Run.Count; i++) {
+            var segment = Component.Run[i];
+            var split = (0<=i & i<SplitManager.SplitList.Count) 
+                ? SplitManager.SplitList[i]
+                : null;
+            Debug.WriteLine($"[UI] Add split setting: {segment.Name} | {split?.FullName}");
+            var frame =  new SplitSettingFrame(segment.Name, split);
+            flow_SplitSettings.Controls.Add(frame);
+            SplitSettingFrames.Add(frame);
+        }
+
+        this.ResumeLayout();
+    }
+
+    private void button_Connect_Click(object sender, EventArgs e)
+    {
+        CommunicationWrapper.ForceReconnect();
+    }
 
     private void OnMainFormClosed(object sender, FormClosedEventArgs e)
     {
