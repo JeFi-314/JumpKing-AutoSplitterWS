@@ -1,9 +1,9 @@
 namespace LiveSplit.JumpKingWS.UI;
 
-public class Node<T>
+public class Container<T>
 {
     public T Value;
-    public Node(T value)
+    public Container(T value)
     {
         Value = value;
     }

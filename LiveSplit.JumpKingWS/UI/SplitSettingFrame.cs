@@ -110,7 +110,7 @@ public partial class SplitSettingFrame : UserControl
     {
         if (isReadyForDrag && e.Button == MouseButtons.Left) {
             if (Math.Abs(mouseY - e.Y) > 5) {
-                DoDragDrop(new Node<SplitSettingFrame>(this), DragDropEffects.All);
+                DoDragDrop(new Container<SplitSettingFrame>(this), DragDropEffects.All);
                 isReadyForDrag = false;
             }
         }

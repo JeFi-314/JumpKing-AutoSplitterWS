@@ -119,7 +119,7 @@ public partial class Settings : UserControl
     {
         var flow = (FlowLayoutPanel) sender;
         Point p = flow.PointToClient(new Point(e.X, e.Y));
-        if (e.Data.GetData(typeof(Node<SplitSettingFrame>)) is Node<SplitSettingFrame> node
+        if (e.Data.GetData(typeof(Container<SplitSettingFrame>)) is Container<SplitSettingFrame> node
             && flow.GetChildAtPoint(p) is SplitSettingFrame dropping) {
             e.Effect = DragDropEffects.Move;
             var dragging = node.Value;
