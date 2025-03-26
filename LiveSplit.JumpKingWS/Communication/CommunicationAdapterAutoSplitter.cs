@@ -24,7 +24,6 @@ SOFTWARE.
 
 using System.Diagnostics;
 using System.IO;
-using System.Threading.Tasks;
 using CommonCom;
 using CommonCom.Util;
 
@@ -49,14 +48,10 @@ public sealed class CommunicationAdapterAutoSplitter() : CommunicationAdapterBas
 
     protected override void OnProtocolVersionMismatch(ushort otherVersion) {
         LogError($"Protocal version mismatch: LiveSplit={ProtocolVersion}, JumpKing={otherVersion}.");
-        // Task.Run(() => CommunicationWrapper.Stop());
     }
 
     protected override void OnConnectionChanged()
     {
-        if (Connected) {
-        } else {
-        }
     }
 
     protected override void HandleMessage(MessageID messageId, BinaryReader reader)

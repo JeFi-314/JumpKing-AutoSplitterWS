@@ -60,7 +60,7 @@ public static class CommunicationWrapper {
         comm = null;
     }
 
-    private static void OnConnectionChanged()
+    public static void OnConnectionChanged(bool connected)
     {
     }
 
