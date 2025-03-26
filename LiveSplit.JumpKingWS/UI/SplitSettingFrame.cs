@@ -14,6 +14,9 @@ using LiveSplit.JumpKingWS.UI.Split;
 namespace LiveSplit.JumpKingWS.UI;
 public partial class SplitSettingFrame : UserControl
 {
+    const string label_SplitName_TIP = "Split Name";
+    const string combo_SplitType_TIP = "Split Type";
+    const string pictureBox_Drag_TIP = "Change position";
     private bool isReadyForDrag = false;
     private int mouseY = 0;
     public SplitType lastSplitType {get; private set;} = SplitType.Manual;
@@ -55,9 +58,9 @@ public partial class SplitSettingFrame : UserControl
         };
         AddSplitSetting(setting);
 
-        toolTip.SetToolTip(label_SplitName, "Split Name");
-        toolTip.SetToolTip(combo_SplitType, "Split Type");
-        toolTip.SetToolTip(pictureBox_Drag, "Drag & Drop");
+        toolTip.SetToolTip(label_SplitName, label_SplitName_TIP);
+        toolTip.SetToolTip(combo_SplitType, combo_SplitType_TIP);
+        toolTip.SetToolTip(pictureBox_Drag, pictureBox_Drag_TIP);
         table_Main.ResumeLayout();
     }
     private void AddHandlers()

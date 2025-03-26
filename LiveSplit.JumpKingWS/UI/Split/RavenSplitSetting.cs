@@ -1,16 +1,12 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Text;
 using System.Windows.Forms;
-using System.Xml;
 using LiveSplit.JumpKingWS.Split;
 
 namespace LiveSplit.JumpKingWS.UI.Split;
 public partial class RavenSplitSetting : SplitSetting
 {
+    const string combo_RavenName_TIP = "Raven Name \n(options are original game raven name)";
+    const string numericUpDown_HomeIndex_TIP = "Home Number (one-index)";
     private RavenSplit ravenSplit;
     public override SplitBase Split => ravenSplit;
 
@@ -29,8 +25,8 @@ public partial class RavenSplitSetting : SplitSetting
 
         numericUpDown_HomeIndex.Value = ravenSplit.HomeIndex1;
 
-        toolTip.SetToolTip(combo_RavenName, "Raven Name \n(drop-down options are original game raven name)");
-        toolTip.SetToolTip(numericUpDown_HomeIndex, "Home Number (one-index)");
+        toolTip.SetToolTip(combo_RavenName, combo_RavenName_TIP);
+        toolTip.SetToolTip(numericUpDown_HomeIndex, numericUpDown_HomeIndex_TIP);
     }
     protected override void AddHandlers() 
     {

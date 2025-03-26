@@ -11,6 +11,10 @@ using LiveSplit.JumpKingWS.Communication;
 namespace LiveSplit.JumpKingWS.UI;
 public partial class Settings : UserControl
 {
+    const string checkBox_AutoStart_TIP = "Start run when game start.";
+    const string checkBox_AutoReset_TIP = "Reset run when game restart.";
+    const string checkBox_Undo_TIP = "Undo screen split if player doesn't land on target screen.\n (as IL rule)";
+    const string button_Reconnect_TIP = "Try reconnect on both side.";
     public static bool isAutoStartSplit = false;
     public static bool isAutoResetSplit = false;
     public static bool isUndoSplit = false;
@@ -58,10 +62,10 @@ public partial class Settings : UserControl
         checkBox_AutoReset.Checked = isAutoResetSplit;
         checkBox_Undo.Checked = isUndoSplit;
 
-        toolTip.SetToolTip(checkBox_AutoStart, "Start run when game start.");
-        toolTip.SetToolTip(checkBox_AutoReset, "Reset run when game restart.");
-        toolTip.SetToolTip(checkBox_Undo, "Undo screen split if player doesn't land on next screen. (as IL rule)");
-        toolTip.SetToolTip(button_Reconnect, "Try reconnect on both side.");
+        toolTip.SetToolTip(checkBox_AutoStart, checkBox_AutoStart_TIP);
+        toolTip.SetToolTip(checkBox_AutoReset, checkBox_AutoReset_TIP);
+        toolTip.SetToolTip(checkBox_Undo, checkBox_Undo_TIP); 
+        toolTip.SetToolTip(button_Reconnect, button_Reconnect_TIP); 
         
         for (int i = 0; i<Component.Run.Count; i++) {
             var segment = Component.Run[i];
