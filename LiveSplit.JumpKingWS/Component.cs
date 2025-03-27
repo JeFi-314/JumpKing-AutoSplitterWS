@@ -1,4 +1,4 @@
-﻿using CommonCom.Util;
+using CommonCom.Util;
 using LiveSplit.JumpKingWS.Communication;
 using LiveSplit.JumpKingWS.Split;
 using LiveSplit.JumpKingWS.State;
@@ -105,9 +105,8 @@ public class Component : IComponent {
 	}
 	public int GetSettingsHashCode()
 	{ 
-		int hash = 0;
+		int hash = Settings.GetHash();
 		hash ^= SplitManager.GetHash();
-		// Debug.WriteLine(hash);
 		return hash;
 	}
 

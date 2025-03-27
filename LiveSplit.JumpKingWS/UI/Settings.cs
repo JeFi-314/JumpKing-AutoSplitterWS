@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Drawing;
@@ -18,6 +18,9 @@ public partial class Settings : UserControl
     public static bool isAutoStartSplit = false;
     public static bool isAutoResetSplit = false;
     public static bool isUndoSplit = false;
+    private static readonly int HASH_isAutoStartSplit = nameof(isAutoStartSplit).GetHashCode();
+    private static readonly int HASH_isAutoResetSplit = nameof(isAutoResetSplit).GetHashCode();
+    private static readonly int HASH_isUndoSplit = nameof(isUndoSplit).GetHashCode();
     
     public static void LoadFromXml(XmlNode node)
     {
@@ -36,6 +39,14 @@ public partial class Settings : UserControl
 		var element = document.CreateElement(key);
 		element.InnerText = value.ToString();
 		return element; 
+	}
+    public static int GetHash()
+    {
+        int hash = 0x6546B5C;
+        if (isAutoStartSplit) hash ^= HASH_isAutoStartSplit;
+        if (isAutoResetSplit) hash ^= HASH_isAutoResetSplit;
+        if (isUndoSplit) hash ^= HASH_isUndoSplit;
+        return hash;
 	}
 
     private bool isRegistedFormClosed = false;
