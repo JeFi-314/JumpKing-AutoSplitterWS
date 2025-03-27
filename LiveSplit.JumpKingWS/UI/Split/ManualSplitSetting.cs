@@ -1,12 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Text;
-using System.Windows.Forms;
-using System.Xml;
-using LiveSplit.JumpKingWS.Split;
+﻿using LiveSplit.JumpKingWS.Split;
 
 namespace LiveSplit.JumpKingWS.UI.Split;
 public partial class ManualSplitSetting : SplitSetting
@@ -22,13 +14,7 @@ public partial class ManualSplitSetting : SplitSetting
         SetupControlValues();
         AddHandlers();
     }
-    protected override void SetupControlValues()
-    {
-    }
-    protected override void AddHandlers() 
-    {
-    }
-    protected override void RemoveHandlers() 
-    {
-    }
+    protected override void SetupControlValues() {}
+    protected override void AddHandlers() {}
+    protected override void RemoveHandlers() {}
 }

@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Xml;
-using CommonCom;
 using LiveSplit.JumpKingWS.UI;
 
 namespace LiveSplit.JumpKingWS.Split;
@@ -44,7 +43,7 @@ public static class SplitManager
         undoSplit = null;
     }
 
-    public static void SetSplitFromXml(XmlNode splitsNode)
+    public static void LoadFromXml(XmlNode splitsNode)
     {
         Clear();
         foreach (XmlNode node in splitsNode.SelectNodes(".//Split"))

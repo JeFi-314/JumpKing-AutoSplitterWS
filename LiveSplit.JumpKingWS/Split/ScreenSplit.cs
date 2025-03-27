@@ -1,5 +1,3 @@
-using System;
-using System.Diagnostics;
 using System.Xml;
 using CommonCom.Util;
 using LiveSplit.JumpKingWS.State;
@@ -8,14 +6,15 @@ namespace LiveSplit.JumpKingWS.Split;
 
 public class ScreenSplit: SplitBase
 {
-    const string NUMBER = "Number";
+    const string NUMBER_NODENAME = "Number";
     public override SplitType SplitType => SplitType.Screen;
     public override string FullName => $"{SplitType.GetName()}-{Number}";
     public int Number;
     private bool needCheckUndo;
 
     public ScreenSplit(): base() {}
-    public ScreenSplit(int p_number) {
+    public ScreenSplit(int p_number)
+    {
         Number = p_number;
         needCheckUndo = false;
     }
@@ -26,14 +25,14 @@ public class ScreenSplit: SplitBase
     }
     public override void SetFromXml(XmlNode node)
     {
-        Number = int.Parse(node[NUMBER].InnerText);
+        Number = int.Parse(node[NUMBER_NODENAME].InnerText);
     }
 
     public override XmlElement GetXmlElement(XmlDocument document)
     {
         XmlElement splitElement = base.GetXmlElement(document);
         
-        XmlElement indexElement = document.CreateElement(NUMBER);
+        XmlElement indexElement = document.CreateElement(NUMBER_NODENAME);
         indexElement.InnerText = Number.ToString();
         splitElement.AppendChild(indexElement);
 

@@ -1,17 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Text;
-using System.Windows.Forms;
-using System.Xml;
-using System.Xml.Serialization;
 using LiveSplit.JumpKingWS.Split;
 
 namespace LiveSplit.JumpKingWS.UI.Split;
 public partial class ScreenSplitSetting : SplitSetting
 {
+    const string numericUpDown_Number_TIP = "Screen Number";
     private ScreenSplit screenSplit;
     public override SplitBase Split => screenSplit;
 
@@ -28,7 +21,7 @@ public partial class ScreenSplitSetting : SplitSetting
     {
         numericUpDown_Number.Value = screenSplit.Number;
 
-        toolTip.SetToolTip(numericUpDown_Number, "Screen Number");
+        toolTip.SetToolTip(numericUpDown_Number, numericUpDown_Number_TIP);
     }
     protected override void AddHandlers() 
     {

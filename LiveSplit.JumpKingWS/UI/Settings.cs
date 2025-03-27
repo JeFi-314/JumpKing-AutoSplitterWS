@@ -11,21 +11,31 @@ using LiveSplit.JumpKingWS.Communication;
 namespace LiveSplit.JumpKingWS.UI;
 public partial class Settings : UserControl
 {
+    const string checkBox_AutoStart_TIP = "Start run when game start.";
+    const string checkBox_AutoReset_TIP = "Reset run when game restart.";
+    const string checkBox_Undo_TIP = "Undo screen split if player doesn't land on target screen.\n (as IL rule)";
+    const string button_Reconnect_TIP = "Try reconnect on both side.";
     public static bool isAutoStartSplit = false;
     public static bool isAutoResetSplit = false;
     public static bool isUndoSplit = false;
+    const string ISAUTOSTARTSPLIT_NODENAME = "AutoStartSplit";
+    const string ISAUTORESETSPLIT_NODENAME = "AutoResetSplit";
+    const string ISUNDOSPLIT_NODENAME = "UndoSplit";
+    private static readonly int HASH_isAutoStartSplit = nameof(isAutoStartSplit).GetHashCode();
+    private static readonly int HASH_isAutoResetSplit = nameof(isAutoResetSplit).GetHashCode();
+    private static readonly int HASH_isUndoSplit = nameof(isUndoSplit).GetHashCode();
     
     public static void LoadFromXml(XmlNode node)
     {
-        bool.TryParse(node[nameof(isAutoStartSplit)]?.InnerText, out isAutoStartSplit);
-		bool.TryParse(node[nameof(isAutoResetSplit)]?.InnerText, out isAutoResetSplit);
-		bool.TryParse(node[nameof(isAutoStartSplit)]?.InnerText, out isUndoSplit);
+        bool.TryParse(node[ISAUTOSTARTSPLIT_NODENAME]?.InnerText, out isAutoStartSplit);
+		bool.TryParse(node[ISAUTORESETSPLIT_NODENAME]?.InnerText, out isAutoResetSplit);
+		bool.TryParse(node[ISUNDOSPLIT_NODENAME]?.InnerText, out isUndoSplit);
     }
     public static void SaveToXml(XmlDocument doc, XmlElement ele)
     {
-		ele.AppendChild(GetXmlKeyValue(doc, nameof(isAutoStartSplit), isAutoStartSplit));
-		ele.AppendChild(GetXmlKeyValue(doc, nameof(isAutoResetSplit), isAutoResetSplit));
-		ele.AppendChild(GetXmlKeyValue(doc, nameof(isUndoSplit), isUndoSplit));
+		ele.AppendChild(GetXmlKeyValue(doc, ISAUTOSTARTSPLIT_NODENAME, isAutoStartSplit));
+		ele.AppendChild(GetXmlKeyValue(doc, ISAUTORESETSPLIT_NODENAME, isAutoResetSplit));
+		ele.AppendChild(GetXmlKeyValue(doc, ISUNDOSPLIT_NODENAME, isUndoSplit));
     }
     private static XmlElement GetXmlKeyValue<T>(XmlDocument document, string key, T value)
 	{
@@ -33,6 +43,14 @@ public partial class Settings : UserControl
 		element.InnerText = value.ToString();
 		return element; 
 	}
+    public static int GetHash()
+    {
+        int hash = 0x6546B5C;
+        if (isAutoStartSplit) hash ^= HASH_isAutoStartSplit;
+        if (isAutoResetSplit) hash ^= HASH_isAutoResetSplit;
+        if (isUndoSplit) hash ^= HASH_isUndoSplit;
+        return hash;
+    }
 
     private bool isRegistedFormClosed = false;
     private readonly List<SplitSettingFrame> SplitSettingFrames = [];
@@ -58,10 +76,10 @@ public partial class Settings : UserControl
         checkBox_AutoReset.Checked = isAutoResetSplit;
         checkBox_Undo.Checked = isUndoSplit;
 
-        toolTip.SetToolTip(checkBox_AutoStart, "Start run when game start.");
-        toolTip.SetToolTip(checkBox_AutoReset, "Reset run when game restart.");
-        toolTip.SetToolTip(checkBox_Undo, "Undo screen split if player doesn't land on next screen. (as IL rule)");
-        toolTip.SetToolTip(button_Reconnect, "Try reconnect on both side.");
+        toolTip.SetToolTip(checkBox_AutoStart, checkBox_AutoStart_TIP);
+        toolTip.SetToolTip(checkBox_AutoReset, checkBox_AutoReset_TIP);
+        toolTip.SetToolTip(checkBox_Undo, checkBox_Undo_TIP); 
+        toolTip.SetToolTip(button_Reconnect, button_Reconnect_TIP); 
         
         for (int i = 0; i<Component.Run.Count; i++) {
             var segment = Component.Run[i];
@@ -119,7 +137,7 @@ public partial class Settings : UserControl
     {
         var flow = (FlowLayoutPanel) sender;
         Point p = flow.PointToClient(new Point(e.X, e.Y));
-        if (e.Data.GetData(typeof(Node<SplitSettingFrame>)) is Node<SplitSettingFrame> node
+        if (e.Data.GetData(typeof(Container<SplitSettingFrame>)) is Container<SplitSettingFrame> node
             && flow.GetChildAtPoint(p) is SplitSettingFrame dropping) {
             e.Effect = DragDropEffects.Move;
             var dragging = node.Value;

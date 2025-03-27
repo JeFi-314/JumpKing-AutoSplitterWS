@@ -1,12 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
 using System.Linq;
-using System.Text;
-using System.Windows.Forms;
-using System.Xml;
 using CommonCom;
 using CommonCom.Util;
 using LiveSplit.JumpKingWS.Split;
@@ -14,6 +7,8 @@ using LiveSplit.JumpKingWS.Split;
 namespace LiveSplit.JumpKingWS.UI.Split;
 public partial class ItemSplitSetting : SplitSetting
 {
+    const string comboBox_Item_TIP = "Item Name";
+    const string numericUpDown_Count_TIP = "Count";
     private ItemSplit itemSplit;
     public override SplitBase Split => itemSplit;
 
@@ -43,8 +38,8 @@ public partial class ItemSplitSetting : SplitSetting
 
         numericUpDown_Count.Value = itemSplit.Count;
 
-        toolTip.SetToolTip(comboBox_Item, "Item Name");
-        toolTip.SetToolTip(numericUpDown_Count, "Count");
+        toolTip.SetToolTip(comboBox_Item, comboBox_Item_TIP);
+        toolTip.SetToolTip(numericUpDown_Count, numericUpDown_Count_TIP);
     }
     protected override void AddHandlers() 
     {
