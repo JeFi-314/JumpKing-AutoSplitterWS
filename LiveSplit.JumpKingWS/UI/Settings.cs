@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Drawing;
@@ -18,21 +18,24 @@ public partial class Settings : UserControl
     public static bool isAutoStartSplit = false;
     public static bool isAutoResetSplit = false;
     public static bool isUndoSplit = false;
+    const string ISAUTOSTARTSPLIT_NODENAME = "AutoStartSplit";
+    const string ISAUTORESETSPLIT_NODENAME = "AutoResetSplit";
+    const string ISUNDOSPLIT_NODENAME = "UndoSplit";
     private static readonly int HASH_isAutoStartSplit = nameof(isAutoStartSplit).GetHashCode();
     private static readonly int HASH_isAutoResetSplit = nameof(isAutoResetSplit).GetHashCode();
     private static readonly int HASH_isUndoSplit = nameof(isUndoSplit).GetHashCode();
     
     public static void LoadFromXml(XmlNode node)
     {
-        bool.TryParse(node[nameof(isAutoStartSplit)]?.InnerText, out isAutoStartSplit);
-		bool.TryParse(node[nameof(isAutoResetSplit)]?.InnerText, out isAutoResetSplit);
-		bool.TryParse(node[nameof(isAutoStartSplit)]?.InnerText, out isUndoSplit);
+        bool.TryParse(node[ISAUTOSTARTSPLIT_NODENAME]?.InnerText, out isAutoStartSplit);
+		bool.TryParse(node[ISAUTORESETSPLIT_NODENAME]?.InnerText, out isAutoResetSplit);
+		bool.TryParse(node[ISUNDOSPLIT_NODENAME]?.InnerText, out isUndoSplit);
     }
     public static void SaveToXml(XmlDocument doc, XmlElement ele)
     {
-		ele.AppendChild(GetXmlKeyValue(doc, nameof(isAutoStartSplit), isAutoStartSplit));
-		ele.AppendChild(GetXmlKeyValue(doc, nameof(isAutoResetSplit), isAutoResetSplit));
-		ele.AppendChild(GetXmlKeyValue(doc, nameof(isUndoSplit), isUndoSplit));
+		ele.AppendChild(GetXmlKeyValue(doc, ISAUTOSTARTSPLIT_NODENAME, isAutoStartSplit));
+		ele.AppendChild(GetXmlKeyValue(doc, ISAUTORESETSPLIT_NODENAME, isAutoResetSplit));
+		ele.AppendChild(GetXmlKeyValue(doc, ISUNDOSPLIT_NODENAME, isUndoSplit));
     }
     private static XmlElement GetXmlKeyValue<T>(XmlDocument document, string key, T value)
 	{
@@ -47,7 +50,7 @@ public partial class Settings : UserControl
         if (isAutoResetSplit) hash ^= HASH_isAutoResetSplit;
         if (isUndoSplit) hash ^= HASH_isUndoSplit;
         return hash;
-	}
+    }
 
     private bool isRegistedFormClosed = false;
     private readonly List<SplitSettingFrame> SplitSettingFrames = [];

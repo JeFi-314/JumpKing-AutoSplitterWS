@@ -44,7 +44,7 @@ public static class SplitManager
         undoSplit = null;
     }
 
-    public static void SetSplitFromXml(XmlNode splitsNode)
+    public static void LoadFromXml(XmlNode splitsNode)
     {
         Clear();
         foreach (XmlNode node in splitsNode.SelectNodes(".//Split"))

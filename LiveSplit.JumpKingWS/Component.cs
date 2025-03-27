@@ -1,4 +1,4 @@
-using CommonCom.Util;
+﻿using CommonCom.Util;
 using LiveSplit.JumpKingWS.Communication;
 using LiveSplit.JumpKingWS.Split;
 using LiveSplit.JumpKingWS.State;
@@ -24,7 +24,7 @@ public class Component : IComponent {
 	public static IRun Run => Timer?.CurrentState?.Run; 
 	public static Settings Settings;
 	public static readonly ConcurrentQueue<Action> ActionQueue = [];
-	private static int startGameTicks = 0;
+	private static int baseGameTicks = 0;
 	private static int lastGameTicks = 0;
 
 	public Component(LiveSplitState state) 
@@ -78,35 +78,37 @@ public class Component : IComponent {
         State.IsGameTimePaused = false;
         lastGameTicks = currentTicks;
 
-        State.SetGameTime(TimeSpan.FromMilliseconds((currentTicks - startGameTicks)*17));
+        State.SetGameTime(TimeSpan.FromMilliseconds((currentTicks - baseGameTicks)*17));
 	}
 
-	public static void SetStartTicks()
+	public static void SetBaseTicks()
 	{
-		startGameTicks = lastGameTicks;
+		baseGameTicks = lastGameTicks;
 	}
-	public static void SetStartTicks(int gameTicks)
+	public static void SetBaseTicks(int gameTicks)
 	{
-		startGameTicks = gameTicks;
+		baseGameTicks = gameTicks;
 	}
 
 	public Control GetSettingsControl(LayoutMode mode) => instanceNode == InstanceList.First ? Settings : new UserControl();
 	public void SetSettings(XmlNode node)
 	{
 		Settings.LoadFromXml(node);
-		SplitManager.SetSplitFromXml(node["Splits"]);
+		SplitManager.LoadFromXml(node["Splits"]);
 	}
-	public XmlNode GetSettings(XmlDocument doc)
+	public XmlNode GetSettings(XmlDocument document)
 	{
-		XmlElement ele = doc.CreateElement("Settings");
-		Settings.SaveToXml(doc, ele);
-		ele.AppendChild(SplitManager.GetXmlElement(doc));
-		return ele;
+		XmlElement settingsEle = document.CreateElement("Settings");
+		
+		Settings.SaveToXml(document, settingsEle);
+		settingsEle.AppendChild(SplitManager.GetXmlElement(document));
+		return settingsEle;
 	}
 	public int GetSettingsHashCode()
 	{ 
 		int hash = Settings.GetHash();
 		hash ^= SplitManager.GetHash();
+		// Debug.WriteLine($"[Component] hash={hash}");
 		return hash;
 	}
 
@@ -132,7 +134,8 @@ public class Component : IComponent {
 	}
 	public void OnStart(object sender, EventArgs e) 
 	{
-		SetStartTicks();
+		SetBaseTicks();
+		
 		Debug.WriteLine($"[Timer] Start");
 	}
 	public void OnSplit(object sender, EventArgs e) 
