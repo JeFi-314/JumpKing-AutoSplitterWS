@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!-- See UpdateManager.Updater.UpdaterInternal -->
+<updates>
+    <!-- See UpdateManager.Update.Parse() -->
+	<update version="1.0.0">
+        <!-- See UpdateManager.FileChange -->
+		<files>
+			<file path="Components/LiveSplit.JumpKingWS.dll" status="Added"/>
+		</files>
+		<changelog>
+			<change> Initial Release </change>
+		</changelog>
+	</update>
+</updates>

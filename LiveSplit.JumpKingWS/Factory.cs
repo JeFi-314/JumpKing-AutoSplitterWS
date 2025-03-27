@@ -1,5 +1,4 @@
-﻿#if !DebugInfo
-using LiveSplit.Model;
+﻿using LiveSplit.Model;
 using LiveSplit.UI.Components;
 using System;
 using System.Diagnostics;
@@ -13,13 +12,19 @@ public class Factory : IComponentFactory {
 		Debugger.Launch();
 	}
 #endif
-    public string ComponentName { get { return "JumpKing AutoSplitterWS v" + this.Version.ToString(); } }
-    public string Description { get { return ""; } }
-    public ComponentCategory Category { get { return ComponentCategory.Control; } }
-    public IComponent Create(LiveSplitState state) { return new Component(state); }
-    public string UpdateName { get { return this.ComponentName; } }
-    public string UpdateURL { get { return ""; } }
-    public string XMLURL { get { return "https://github.com/JeFi-314/JumpKing-AutoSplitterWS"; } }
-    public Version Version { get { return Assembly.GetExecutingAssembly().GetName().Version; } }
+    public string ComponentName => "JumpKing AutoSplitterWS";
+    public string Description => "AutoSplitter for JumpKing based on Steam workshop";
+    public ComponentCategory Category => ComponentCategory.Control;
+    public IComponent Create(LiveSplitState state) => new Component(state);
+
+    // The component name displayed in the update message box dialog.
+    public string UpdateName => ComponentName;
+
+    // Updater in LiveSplit will find the files to add/change/remove based on this URL.
+    public string UpdateURL => "https://raw.githubusercontent.com/JeFi-314/JumpKing-AutoSplitterWS/main/";
+
+    // The update history information, which will be read by UpdaterInternal.
+    public string XMLURL => $"{UpdateURL}Components/Updates.xml";
+
+    public Version Version => Assembly.GetExecutingAssembly().GetName().Version;
 }
-#endif
