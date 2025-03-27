@@ -116,12 +116,6 @@ public class Component : IComponent {
 
 	public void OnReset(object sender, TimerPhase e) 
 	{
-		AchievementState.Reset();
-		EndingState.Reset();
-		ItemState.Reset();
-		RavenState.Reset();
-		ScreenState.Reset();
-
 		Debug.WriteLine($"[Timer] Reset");
 	}
 	public void OnPause(object sender, EventArgs e) 
@@ -134,6 +128,11 @@ public class Component : IComponent {
 	}
 	public void OnStart(object sender, EventArgs e) 
 	{
+		AchievementState.Reset();
+		EndingState.Reset();
+		ItemState.Reset();
+		RavenState.Reset();
+		ScreenState.Reset();
 		SetBaseTicks();
 		
 		Debug.WriteLine($"[Timer] Start");
