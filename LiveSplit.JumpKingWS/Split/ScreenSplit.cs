@@ -1,5 +1,3 @@
-using System;
-using System.Diagnostics;
 using System.Xml;
 using CommonCom.Util;
 using LiveSplit.JumpKingWS.State;
@@ -15,7 +13,8 @@ public class ScreenSplit: SplitBase
     private bool needCheckUndo;
 
     public ScreenSplit(): base() {}
-    public ScreenSplit(int p_number) {
+    public ScreenSplit(int p_number)
+    {
         Number = p_number;
         needCheckUndo = false;
     }

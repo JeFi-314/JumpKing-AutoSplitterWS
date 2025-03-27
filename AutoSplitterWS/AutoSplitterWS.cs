@@ -60,8 +60,8 @@ public static class AutoSplitterWS
             new Patching.OnGiveUpAch(harmony);
             new Patching.RavenFlee(harmony);
         }
-        catch (Exception e) {
-            Debug.WriteLine(e.ToString());
+        catch (Exception ex) {
+            Debug.WriteLine(ex);
         }
 
 #if DEBUG

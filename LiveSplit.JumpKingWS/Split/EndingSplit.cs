@@ -1,10 +1,7 @@
-using System;
-using System.Diagnostics;
 using System.Xml;
 using CommonCom;
 using CommonCom.Util;
 using LiveSplit.JumpKingWS.State;
-using LiveSplit.Model;
 
 namespace LiveSplit.JumpKingWS.Split;
 

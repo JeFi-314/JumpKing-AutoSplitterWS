@@ -1,10 +1,6 @@
-using System;
-using System.Diagnostics;
 using System.Xml;
-using CommonCom;
 using CommonCom.Util;
 using LiveSplit.JumpKingWS.State;
-using LiveSplit.Model;
 
 namespace LiveSplit.JumpKingWS.Split;
 
@@ -18,7 +14,8 @@ public class RavenSplit: SplitBase
     public int HomeIndex1;
 
     public RavenSplit(): base() {}
-    public RavenSplit(string p_ravenName, int p_homeIndex1) {
+    public RavenSplit(string p_ravenName, int p_homeIndex1)
+    {
         RavenName = p_ravenName;
         HomeIndex1 = p_homeIndex1;
     }

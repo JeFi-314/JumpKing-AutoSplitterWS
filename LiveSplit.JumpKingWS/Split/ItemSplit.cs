@@ -1,10 +1,7 @@
 using LiveSplit.JumpKingWS.State;
 using CommonCom;
 using System.Xml;
-using System;
 using CommonCom.Util;
-using LiveSplit.Model;
-using System.Diagnostics;
 
 namespace LiveSplit.JumpKingWS.Split;
 
@@ -18,7 +15,8 @@ public class ItemSplit: SplitBase
     public int Count;
     
     public ItemSplit(): base() {}
-    public ItemSplit(Item p_item, int p_count) {
+    public ItemSplit(Item p_item, int p_count)
+    {
         Item = p_item;
         Count = p_count;
     }
