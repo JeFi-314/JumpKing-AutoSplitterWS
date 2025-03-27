@@ -70,15 +70,9 @@ public class Component : IComponent {
 
 	public static void UpdateGameTime(int currentTicks)
 	{
-        if (currentTicks == lastGameTicks)
-        {
-            State.IsGameTimePaused = true;
-            return;
-        }
-        State.IsGameTimePaused = false;
-        lastGameTicks = currentTicks;
-
         State.SetGameTime(TimeSpan.FromMilliseconds((currentTicks - baseGameTicks)*17));
+		State.IsGameTimePaused = currentTicks==lastGameTicks;
+        lastGameTicks = currentTicks;
 	}
 
 	public static void SetBaseTicks()
