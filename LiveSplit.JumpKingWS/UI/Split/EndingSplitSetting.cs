@@ -30,6 +30,7 @@ public partial class EndingSplitSetting : SplitSetting
         };
 
         combo_Ending.SelectedItem = endingSplit.Ending;
+        toolTip.SetToolTip(combo_Ending, "Ending Name");
     }
     protected override void AddHandlers() 
     {
