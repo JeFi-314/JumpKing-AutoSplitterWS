@@ -11,30 +11,30 @@ using LiveSplit.JumpKingWS.Communication;
 namespace LiveSplit.JumpKingWS.UI;
 public partial class Settings : UserControl
 {
-    const string checkBox_AutoStart_TIP = "Start run when game start.";
-    const string checkBox_AutoReset_TIP = "Reset run when game restart.";
+    const string checkBox_AutoStart_TIP = "Start timer when game start.";
+    const string checkBox_AutoReset_TIP = "Reset timer when game restart.";
     const string checkBox_Undo_TIP = "Undo screen split if player doesn't land on target screen.\n (as IL rule)";
     const string button_Reconnect_TIP = "Try reconnect on both side.";
-    public static bool isAutoStartSplit = false;
-    public static bool isAutoResetSplit = false;
+    public static bool isAutoStartTimer = false;
+    public static bool isAutoResetTimer = false;
     public static bool isUndoSplit = false;
-    const string ISAUTOSTARTSPLIT_NODENAME = "AutoStartSplit";
-    const string ISAUTORESETSPLIT_NODENAME = "AutoResetSplit";
+    const string ISAUTOSTARTTIMER_NODENAME = "AutoStartTimer";
+    const string ISAUTORESETTIMER_NODENAME = "AutoResetTimer";
     const string ISUNDOSPLIT_NODENAME = "UndoSplit";
-    private static readonly int HASH_isAutoStartSplit = nameof(isAutoStartSplit).GetHashCode();
-    private static readonly int HASH_isAutoResetSplit = nameof(isAutoResetSplit).GetHashCode();
+    private static readonly int HASH_isAutoStartTimer = nameof(isAutoStartTimer).GetHashCode();
+    private static readonly int HASH_isAutoResetTimer = nameof(isAutoResetTimer).GetHashCode();
     private static readonly int HASH_isUndoSplit = nameof(isUndoSplit).GetHashCode();
     
     public static void LoadFromXml(XmlNode node)
     {
-        bool.TryParse(node[ISAUTOSTARTSPLIT_NODENAME]?.InnerText, out isAutoStartSplit);
-		bool.TryParse(node[ISAUTORESETSPLIT_NODENAME]?.InnerText, out isAutoResetSplit);
+        bool.TryParse(node[ISAUTOSTARTTIMER_NODENAME]?.InnerText, out isAutoStartTimer);
+		bool.TryParse(node[ISAUTORESETTIMER_NODENAME]?.InnerText, out isAutoResetTimer);
 		bool.TryParse(node[ISUNDOSPLIT_NODENAME]?.InnerText, out isUndoSplit);
     }
     public static void SaveToXml(XmlDocument doc, XmlElement ele)
     {
-		ele.AppendChild(GetXmlKeyValue(doc, ISAUTOSTARTSPLIT_NODENAME, isAutoStartSplit));
-		ele.AppendChild(GetXmlKeyValue(doc, ISAUTORESETSPLIT_NODENAME, isAutoResetSplit));
+		ele.AppendChild(GetXmlKeyValue(doc, ISAUTOSTARTTIMER_NODENAME, isAutoStartTimer));
+		ele.AppendChild(GetXmlKeyValue(doc, ISAUTORESETTIMER_NODENAME, isAutoResetTimer));
 		ele.AppendChild(GetXmlKeyValue(doc, ISUNDOSPLIT_NODENAME, isUndoSplit));
     }
     private static XmlElement GetXmlKeyValue<T>(XmlDocument document, string key, T value)
@@ -46,8 +46,8 @@ public partial class Settings : UserControl
     public static int GetHash()
     {
         int hash = 0x6546B5C;
-        if (isAutoStartSplit) hash ^= HASH_isAutoStartSplit;
-        if (isAutoResetSplit) hash ^= HASH_isAutoResetSplit;
+        if (isAutoStartTimer) hash ^= HASH_isAutoStartTimer;
+        if (isAutoResetTimer) hash ^= HASH_isAutoResetTimer;
         if (isUndoSplit) hash ^= HASH_isUndoSplit;
         return hash;
     }
@@ -72,8 +72,8 @@ public partial class Settings : UserControl
 
         this.Dock = DockStyle.Fill;
 
-        checkBox_AutoStart.Checked = isAutoStartSplit;
-        checkBox_AutoReset.Checked = isAutoResetSplit;
+        checkBox_AutoStart.Checked = isAutoStartTimer;
+        checkBox_AutoReset.Checked = isAutoResetTimer;
         checkBox_Undo.Checked = isUndoSplit;
 
         toolTip.SetToolTip(checkBox_AutoStart, checkBox_AutoStart_TIP);
@@ -105,8 +105,8 @@ public partial class Settings : UserControl
         Form form = FindForm();
 
         if (form.DialogResult == DialogResult.OK) {
-            isAutoStartSplit = checkBox_AutoStart.Checked;
-            isAutoResetSplit = checkBox_AutoReset.Checked;
+            isAutoStartTimer = checkBox_AutoStart.Checked;
+            isAutoResetTimer = checkBox_AutoReset.Checked;
             isUndoSplit = checkBox_Undo.Checked;
 
             SplitManager.Clear();

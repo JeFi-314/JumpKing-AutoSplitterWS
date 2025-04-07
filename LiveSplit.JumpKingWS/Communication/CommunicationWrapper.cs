@@ -109,7 +109,7 @@ public static class CommunicationWrapper {
 
     public static void OnGameLoopStart(int ticks)
     {
-        if (Settings.isAutoStartSplit) Component.Timer?.Start();
+        if (Settings.isAutoStartTimer) Component.Timer?.Start();
         Component.UpdateGameTime(ticks);
         EndingState.Reset();
     }
@@ -123,7 +123,7 @@ public static class CommunicationWrapper {
 
     public static void OnRestart()
     {
-        if (Settings.isAutoResetSplit) Component.Timer?.Reset();
+        if (Settings.isAutoResetTimer) Component.Timer?.Reset();
         ScreenState.Reset();
         RavenState.Reset();
     }
