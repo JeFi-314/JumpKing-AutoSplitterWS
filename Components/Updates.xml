@@ -5,7 +5,7 @@
 	<update version="1.0.0">
         <!-- See UpdateManager.FileChange -->
 		<files>
-			<file path="Components/LiveSplit.JumpKingWS.dll" status="Added"/>
+			<file path="Components/LiveSplit.JumpKingWS.dll" status="Changed"/>
 		</files>
 		<changelog>
 			<change> Initial Release </change>
