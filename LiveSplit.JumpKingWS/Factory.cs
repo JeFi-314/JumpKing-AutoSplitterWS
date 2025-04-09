@@ -13,7 +13,7 @@ public class Factory : IComponentFactory {
 	}
 #endif
     public string ComponentName => "JumpKing AutoSplitterWS";
-    public string Description => "AutoSplitter for JumpKing based on Steam workshop";
+    public string Description => "AutoSplitter for JumpKing (based on the Steam Workshop item)";
     public ComponentCategory Category => ComponentCategory.Control;
     public IComponent Create(LiveSplitState state) => new Component(state);
 
