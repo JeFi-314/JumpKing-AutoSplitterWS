@@ -32,15 +32,26 @@ public static class CommunicationWrapper {
 
     public static bool Connected => comm is { Connected: true };
     private static CommunicationAdapterJumpKing comm;
+    private static readonly object startLock = new();
+    private static bool isProcessExited = false;
 
     static CommunicationWrapper()
     {
-        // Stop communicating thread when process end
-        AppDomain.CurrentDomain.ProcessExit += (sender, e) => Stop();
+        // Stop communicating thread when process is exiting
+        AppDomain.CurrentDomain.ProcessExit += (sender, e) => {
+            lock (startLock) {isProcessExited = true;}
+            Stop();
+        };
     }
 
     public static void Start()
     {
+        lock (startLock) {
+            if (isProcessExited) {
+                Debug.WriteLine("[Wrapper] Tried to start the communication adapter after process exited!");
+                return;
+            }
+        }
         if (comm != null) {
             Debug.WriteLine("[Wrapper] Tried to start the communication adapter while already running!");
             return;

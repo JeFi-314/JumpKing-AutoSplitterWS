@@ -158,7 +158,9 @@ public abstract class CommunicationAdapterBase : IDisposable {
                 goto Retry;
             }
         }) {
-            Name = "Communication"
+            Name = "Communication",
+            // Avoid thread blocking on process exiting 
+            IsBackground = true
         };
         thread.Start();
         LogInfo("Communication started");
